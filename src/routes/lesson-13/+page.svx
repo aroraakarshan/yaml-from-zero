@@ -1,0 +1,123 @@
+<script>
+import YamlViewer from '$lib/components/YamlViewer.svelte';
+
+const report = [
+  { indent: 0, tokens: [{ text: 'project_name', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"My Chip"', type: 'str' }] },
+  { indent: 0, tokens: [{ text: 'frequency_mhz', type: 'key' }, { text: ': ', type: 'colon' }, { text: '100', type: 'num' }] },
+  { indent: 0, tokens: [{ text: 'debug_mode', type: 'key' }, { text: ': ', type: 'colon' }, { text: 'true', type: 'bool' }] },
+];
+</script>
+
+# Writing YAML from Python
+
+The reverse direction is just as important: sometimes a Python script needs to *create* a YAML file. Common situations in semiconductor design:
+
+- After a simulation run, save the resulting power/timing numbers as YAML for the next stage
+- After synthesis, write a report file summarising the area and critical path
+- When generating many test cases, produce one small YAML per test
+
+The good news: writing YAML is just as simple as reading it.
+
+---
+
+## From dictionary to file: `yaml.dump()`
+
+`yaml.dump()` is the opposite of `yaml.safe_load()`. You hand it a Python dictionary and a file, and it writes out a clean YAML file.
+
+First, install the library (one-time, same as for reading):
+
+```bash
+pip install pyyaml
+```
+
+A complete write example:
+
+```python
+import yaml
+
+config = dict(
+    project_name='My Chip',
+    frequency_mhz=100,
+    debug_mode=True,
+)
+
+with open('output.yaml', 'w') as f:
+    yaml.dump(config, f, default_flow_style=False)
+```
+
+Run it, and the script creates `output.yaml` in the current folder containing exactly the values you put into the dictionary.
+
+---
+
+## The three lines that write YAML
+
+Strip away everything except the essentials:
+
+```python
+import yaml
+
+with open('output.yaml', 'w') as f:
+    yaml.dump(my_data, f, default_flow_style=False)
+```
+
+What each piece does:
+
+- **`open('output.yaml', 'w')`** — opens the file for **writing** (the `'w'` is important; without it Python refuses to overwrite)
+- **`yaml.dump(my_data, f, ...)`** — writes the Python data into that file as YAML
+- **`default_flow_style=False`** — tells PyYAML to use the readable multi-line format, not a cramped one-line "flow" style
+
+---
+
+## The flow style trap
+
+If you forget `default_flow_style=False`, PyYAML tries to help by putting everything on one line — something like `[project_name: My Chip, frequency_mhz: 100, debug_mode: true]` all crammed together inside braces.
+
+That is technically valid YAML, but nobody wants to read it. With `default_flow_style=False`, you get the clean, proper format instead:
+
+<YamlViewer rows={report} />
+
+**Rule of thumb: always pass `default_flow_style=False` unless you explicitly want one-liner output.**
+
+---
+
+## Going the other way: reading what you wrote
+
+Whatever `yaml.dump()` writes, `yaml.safe_load()` can read back. This is how EDA tool chains pass data between stages without writing custom binary formats — each stage speaks plain YAML.
+
+```python
+import yaml
+
+# Stage 1: write
+results = dict(area_um2=12450, max_freq_mhz=1200)
+with open('stage1.yaml', 'w') as f:
+    yaml.dump(results, f, default_flow_style=False)
+
+# Stage 2: read
+with open('stage1.yaml') as f:
+    prev = yaml.safe_load(f)
+print(prev['area_um2'])   # 12450
+```
+
+Your YAML file acts as the contract between the two scripts. If someone later wants to inspect or tweak what stage 1 handed off, they can open the YAML file in any text editor — no special tool required.
+
+---
+
+## Key takeaways
+
+- `yaml.dump(data, file)` turns a Python dictionary into a YAML file
+- Open the file with `'w'` to allow writing: `open('out.yaml', 'w')`
+- Always pass `default_flow_style=False` for readable multi-line output
+- Scripts in a pipeline can pass data via YAML files — one writes, the next reads — no special format needed
+
+Next, we will see what happens when things go wrong: syntax mistakes in YAML, missing files, and how Python reports them.
+
+---
+
+<div class="not-prose" style="margin-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+  <a href="/lesson-12" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-size:0.82rem;text-decoration:none;border:1px solid var(--color-border);color:var(--color-text-muted);font-family:var(--font-ui);transition:all 0.25s ease;">
+    ← Previous
+  </a>
+  <a href="/lesson-14" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-weight:600;font-size:0.85rem;text-decoration:none;background:var(--color-accent);color:white;font-family:var(--font-ui);transition:all 0.25s ease;">
+    Next: Handling YAML Errors →
+  </a>
+</div>

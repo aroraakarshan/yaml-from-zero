@@ -67,7 +67,7 @@
 	const cards = [
 		{
 			title: 'Synthesis',
-			icon: '⚡',
+			icon: 'SY',
 			color: '#dc2626',
 			lines: [
 				{ tokens: tokenize('synthesis_config:'), annotation: '# Top-level group' },
@@ -80,7 +80,7 @@
 		},
 		{
 			title: 'Place & Route',
-			icon: '📐',
+			icon: 'PR',
 			color: '#b45309',
 			lines: [
 				{ tokens: tokenize('pnr_config:'), annotation: '# Place & Route settings' },
@@ -94,7 +94,7 @@
 		},
 		{
 			title: 'Simulation',
-			icon: '🔬',
+			icon: 'SI',
 			color: '#7c3aed',
 			lines: [
 				{ tokens: tokenize('simulation_config:'), annotation: '# Simulation setup' },
@@ -107,7 +107,7 @@
 		},
 		{
 			title: 'Test Config',
-			icon: '🧪',
+			icon: 'TE',
 			color: '#0969a8',
 			lines: [
 				{ tokens: tokenize('production_test:'), annotation: '# Manufacturing test setup' },

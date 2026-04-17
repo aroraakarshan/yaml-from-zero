@@ -1,0 +1,161 @@
+<script>
+import YamlToDictAnimation from '$lib/components/YamlToDictAnimation.svelte';
+import YamlViewer from '$lib/components/YamlViewer.svelte';
+
+const semiconExample = [
+  { indent: 0, tokens: [{ text: '# Chip configuration', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'chip_name', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"TitanCore"', type: 'str' }] },
+  { indent: 0, tokens: [{ text: 'frequency_mhz', type: 'key' }, { text: ': ', type: 'colon' }, { text: '100', type: 'num' }] },
+  { indent: 0, tokens: [{ text: 'voltage', type: 'key' }, { text: ': ', type: 'colon' }, { text: '1.2', type: 'num' }] },
+  { indent: 0, tokens: [{ text: 'debug_mode', type: 'key' }, { text: ': ', type: 'colon' }, { text: 'true', type: 'bool' }] },
+];
+</script>
+
+# Reading YAML in Python
+
+Your YAML file is a static text file. To actually *use* its values — to run a simulation, generate a report, or pass settings to a tool — something has to read it. In semiconductor workflows, that "something" is almost always a **Python script**.
+
+---
+
+## Why Python?
+
+Python is the most widely used scripting language in semiconductor design. Engineers write thin Python wrappers that:
+
+1. **Read a YAML config file** — the engineer-friendly description of what to run
+2. **Pass the values into the EDA tool** — synthesis, simulation, place-and-route
+3. **Collect results back** — often writing more YAML files for the next stage
+
+You do not have to write these Python scripts yourself — but understanding *what they do with your YAML* helps you write better YAML.
+
+---
+
+## The YAML file becomes a Python dictionary
+
+This is the single most important idea in this lesson:
+
+> When Python reads a YAML file, the file turns into a **dictionary** — a table of key-value pairs that Python can look up instantly.
+
+Every key in your YAML becomes a key in the dictionary. Every value keeps its type: numbers stay numbers, text stays text, lists stay lists.
+
+<YamlToDictAnimation />
+
+---
+
+## Installing the YAML library
+
+Python does not read YAML on its own. You need one small library called **PyYAML**. It is installed with a single command:
+
+```bash
+pip install pyyaml
+```
+
+`pip` is Python's package installer. You usually run this once on your machine and never think about it again. On shared company servers, it may already be installed — ask your tools team.
+
+---
+
+## The three lines that read YAML
+
+Here is every Python script that reads YAML, stripped down to its essence:
+
+```python
+import yaml
+
+with open('chip_config.yaml') as f:
+    config = yaml.safe_load(f)
+```
+
+Line by line:
+
+- **`import yaml`** — tells Python "I want to use the YAML library"
+- **`open('chip_config.yaml')`** — opens the file for reading
+- **`yaml.safe_load(f)`** — reads the file and returns a Python dictionary called `config`
+
+That's it. Three lines, and your YAML is loaded. **Always use `safe_load`** — not `load`. `safe_load` refuses to execute arbitrary code hidden in YAML files, which is safer for files coming from email, version control, or the web.
+
+---
+
+## Accessing values
+
+Once `config` is loaded, you reach into it with square brackets, using the key name:
+
+```python
+print(config['chip_name'])       # TitanCore
+print(config['frequency_mhz'])   # 100
+print(config['debug_mode'])      # True
+```
+
+For **nested** YAML, chain the brackets:
+
+```python
+# YAML has base_config with technology nested inside it
+print(config['base_config']['technology'])   # 28nm
+```
+
+For **lists**, use a number (starting from 0 — the first item is `[0]`, not `[1]`):
+
+```python
+# YAML:  team: [Alice, Bob, Carol]
+print(config['team'][0])   # Alice
+print(config['team'][2])   # Carol
+```
+
+---
+
+## A complete, runnable example
+
+Here is the YAML file:
+
+<YamlViewer rows={semiconExample} />
+
+And here is the complete Python script that reads it and uses every value:
+
+```python
+import yaml
+
+with open('chip.yaml') as f:
+    config = yaml.safe_load(f)
+
+chip = config['chip_name']
+freq = config['frequency_mhz']
+volt = config['voltage']
+debug = config['debug_mode']
+
+print("Building", chip, "at", freq, "MHz,", volt, "V")
+
+if debug:
+    print("Debug mode is ON — extra logs will be collected")
+else:
+    print("Debug mode is OFF — production run")
+```
+
+Run it and you get:
+
+```
+Building TitanCore at 100 MHz, 1.2 V
+Debug mode is ON — extra logs will be collected
+```
+
+Notice what happened: the YAML file *is* the human-editable interface. The Python script is the machinery. You change the `.yaml` file (no coding), and the script behaves differently. **This separation is the whole point of using YAML.**
+
+---
+
+## Key takeaways
+
+- YAML files become **Python dictionaries** after `yaml.safe_load()`
+- Install the library once: `pip install pyyaml`
+- Three lines of Python read any YAML file — `import yaml`, `open(...)`, `yaml.safe_load()`
+- Access values with `config['key']`, nested with `config['a']['b']`, lists with `config['list'][0]`
+- Always use `safe_load` (not `load`) — it's safer with files from outside sources
+
+Next we will see the reverse direction: how a Python script can produce YAML files of its own — useful when a tool needs to write reports or hand results to the next stage.
+
+---
+
+<div class="not-prose" style="margin-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+  <a href="/lesson-11" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-size:0.82rem;text-decoration:none;border:1px solid var(--color-border);color:var(--color-text-muted);font-family:var(--font-ui);transition:all 0.25s ease;">
+    ← Previous
+  </a>
+  <a href="/lesson-13" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-weight:600;font-size:0.85rem;text-decoration:none;background:var(--color-accent);color:white;font-family:var(--font-ui);transition:all 0.25s ease;">
+    Next: Writing YAML from Python →
+  </a>
+</div>

@@ -1,0 +1,109 @@
+# Glossary
+
+A quick, plain-English lookup for every technical word that appears in the tutorial. Use it whenever a term feels fuzzy — no shame in coming back here often.
+
+---
+
+## YAML core terms
+
+**YAML** — a plain-text format for storing configuration. Stands for "YAML Ain't Markup Language". *Lesson 1*
+
+**Key** — the label on the left of a colon. In `voltage: 1.2`, the key is `voltage`. *Lesson 2*
+
+**Value** — what's on the right of a colon. In `voltage: 1.2`, the value is `1.2`. *Lesson 2*
+
+**Key-value pair** — a key together with its value, e.g. `frequency_mhz: 100`. The basic building block of YAML. *Lesson 2*
+
+**Scalar** — a single, simple value: text, a number, or true/false. Not a list or a group. *Lesson 2*
+
+**String** — a piece of text, usually wrapped in quotes: `"TitanCore"`. *Lesson 2*
+
+**Integer** — a whole number with no decimal point: `100`, `25`, `-7`. *Lesson 2*
+
+**Float** — a number with a decimal point: `1.2`, `3.14`. *Lesson 2*
+
+**Boolean** — a true/false value. YAML accepts `true` and `false` (lowercase). *Lesson 2*
+
+**Comment** — text starting with `#` that the computer ignores; only humans read it. *Lesson 2*
+
+**Indentation** — the spaces at the start of a line. YAML uses indentation to show grouping. Always **spaces**, never tabs. *Lesson 3*
+
+**Nested** — placed inside something else. A block of keys indented under a parent key is nested. *Lesson 3*
+
+**List** — an ordered series of items, each starting with a dash (`-`). *Lesson 4*
+
+**Object** — a group of related key-value pairs, e.g. one chip's complete spec. Sometimes called a "dictionary" or "mapping". *Lesson 4*
+
+**Multi-line text** — text that spans several lines. YAML uses `|` to keep line breaks and `>` to fold them into one line. *Lesson 5*
+
+**Block style** — the readable, multi-line YAML format that uses indentation. Opposite of flow style. *Lesson 5*
+
+**Flow style** — the compact one-line YAML format using `[…]` and `{…}`. Valid but harder to read. *Lesson 12*
+
+**Anchor** — a named template marker. Created with `&name`. *Lesson 9*
+
+**Alias** — a reference back to an anchor. Written as `*name`. *Lesson 9*
+
+**Merge key** — `<<:` followed by an alias. Copies all key-value pairs from the anchored block into the current block. *Lesson 9*
+
+---
+
+## Errors and validation
+
+**Syntax** — the rules for how a language must be written. A "syntax error" means you broke one of those rules. *Lesson 7*
+
+**Validate / validation** — check whether a file follows the rules. A YAML validator tells you if your file is well-formed. *Lesson 8*
+
+**Parse** — read a file and turn it into a structure the computer can use. `yaml.safe_load()` parses YAML. *Lesson 12*
+
+**Duplicate key** — using the same key twice at the same level. The second one silently overwrites the first — a common bug. *Lesson 7*
+
+---
+
+## Coding terms (Part 4)
+
+**Script** — a plain text file with instructions for the computer (e.g. `run_synth.py`). You can open it in any editor. *Lesson 11*
+
+**Terminal** (also: shell, command line, console) — the text window where you type commands. Same idea as Cadence's Tcl prompt. *Lesson 11*
+
+**File path** — the address of a file on disk. Relative: `chip.yaml`. Absolute: `/home/alice/chip.yaml`. *Lesson 11*
+
+**Library** — reusable code somebody else wrote. Python's `yaml` library reads and writes YAML files for you. *Lesson 11*
+
+**`pip`** — Python's package installer. `pip install pyyaml` downloads the YAML library. *Lesson 11*
+
+**`import`** — Python keyword that loads a library. `import yaml` makes the YAML library available in the script. *Lesson 11*
+
+**Function** — a named piece of code you can call to do a task. `yaml.safe_load(f)` calls the `safe_load` function with `f` as input. *Lesson 12*
+
+**Argument** — a value you pass into a function. In `yaml.dump(data, f)`, `data` and `f` are arguments. *Lesson 13*
+
+**Dictionary (dict)** — Python's name for a collection of key-value pairs. When Python reads a YAML file, the result is a dictionary. *Lesson 12*
+
+**Index** — a number that picks an item from a list. Lists start at 0 — `team[0]` is the first item, `team[1]` is the second. *Lesson 12*
+
+**Exception / error** — when something goes wrong, Python raises an exception that stops the program. `YAMLError` and `FileNotFoundError` are examples. *Lesson 14*
+
+**`try / except`** — Python's way of handling exceptions gracefully instead of crashing. *Lesson 14*
+
+---
+
+## Hardware / EDA terms (used as analogies)
+
+**SDC** — Synopsys Design Constraints. A text file telling synthesis tools about clocks and timing. Conceptually similar to a YAML config — both feed parameters into a tool.
+
+**Liberty (`.lib`)** — a text file describing standard cell timing/power. Like YAML, it's plain text packed with key-value-style information.
+
+**Verilog/VHDL** — hardware description languages. Many design teams generate per-block Verilog parameters from a central YAML config.
+
+**Testbench** — verification code that exercises a design. Often configured by YAML files specifying which tests to run and with what parameters.
+
+**EDA tool** — Electronic Design Automation tool (Cadence, Synopsys, Mentor). They typically read configs (YAML, Tcl, SDC) and produce reports.
+
+---
+
+<div class="not-prose" style="margin-top:2rem;display:flex;justify-content:center;">
+  <a href="/" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-weight:600;font-size:0.85rem;text-decoration:none;background:var(--color-accent);color:white;font-family:var(--font-ui);transition:all 0.25s ease;">
+    ← Back to Home
+  </a>
+</div>

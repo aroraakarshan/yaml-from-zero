@@ -1,0 +1,132 @@
+<script>
+import BundleCard from '$lib/components/BundleCard.svelte';
+</script>
+
+# Handling YAML Errors in Python
+
+Real files are not always clean. A colleague fat-fingers a tab instead of a space, a script points at the wrong folder, or a forgotten quote breaks a value. When this happens, `yaml.safe_load()` will stop your program with an error — *unless* you handle it gracefully.
+
+This lesson shows the two errors you will meet in practice and the small amount of Python needed to handle them like a professional.
+
+---
+
+## The two errors you will actually hit
+
+| Error | What it means | Typical cause |
+|-------|---------------|---------------|
+| `yaml.YAMLError` | The file exists, but its contents aren't valid YAML | tab indentation, missing colon, unbalanced quotes |
+| `FileNotFoundError` | The file does not exist at the given path | wrong folder, typo in the file name |
+
+There are others, but these two cover > 95 % of real cases for config files in semiconductor flows.
+
+---
+
+## What `YAMLError` looks like
+
+Say your `chip_config.yaml` has a tab on line 5 (which YAML forbids). Run `yaml.safe_load()` on it and Python stops with something like this:
+
+```
+yaml.scanner.ScannerError: while scanning for the next token
+found character '\t' that cannot start any token
+  in "chip_config.yaml", line 5, column 1
+```
+
+The important parts:
+
+- **`line 5, column 1`** — exactly where to look in your editor
+- **`found character '\t'`** — the actual problem (a tab)
+
+The error message is ugly, but it is very *precise*. Lesson 08 covered the same errors from the validator side — Python's `yaml` library uses the same machinery, so you learn one set of messages and they apply everywhere.
+
+---
+
+## The safe pattern
+
+Here is the idiomatic Python way to read a YAML file while handling both errors. Memorise the shape, not the details:
+
+```python
+import yaml
+
+try:
+    with open('chip_config.yaml') as f:
+        config = yaml.safe_load(f)
+except yaml.YAMLError as e:
+    print("Your YAML file has a syntax error:")
+    print(e)
+    exit(1)
+except FileNotFoundError:
+    print("chip_config.yaml was not found in this folder.")
+    exit(1)
+
+print("Config loaded successfully.")
+```
+
+Walk through it:
+
+1. **`try:`** — "attempt the following, but be ready to handle failures"
+2. **`except yaml.YAMLError as e:`** — if the YAML parser throws up, print a friendly message instead of a scary stack trace
+3. **`except FileNotFoundError:`** — if the file does not exist, print a different friendly message
+4. **`exit(1)`** — stop the program with an error code so build systems (Jenkins, Make, etc.) know it failed
+
+The line `exit(1)` matters in a CI pipeline — without it, later stages might run on a missing config and produce garbage results.
+
+---
+
+## Handling missing keys
+
+A file can be valid YAML but still missing a value your script expects. For example, a teammate hands you a config without `frequency_mhz`. Reading goes fine, but `config['frequency_mhz']` crashes with `KeyError`.
+
+Use `.get()` with a default for optional values:
+
+```python
+freq = config.get('frequency_mhz', 100)   # defaults to 100 if missing
+```
+
+For required values, check explicitly and give a helpful error:
+
+```python
+if 'chip_name' not in config:
+    print("Error: chip_name is required but missing from chip_config.yaml")
+    exit(1)
+```
+
+This saves hours of debugging later — instead of a cryptic crash deep inside your tool, the person running the script sees exactly what they forgot.
+
+---
+
+## Who writes this code?
+
+In almost every team, the **tools or CAD team** writes the wrapper script once, and every engineer reuses it. You usually won't write error-handling code yourself. But when the error message appears on your screen, you now know:
+
+- *Which file* caused it (because the wrapper printed the name)
+- *Which line* (because the YAML error includes it)
+- *That the problem is in your YAML*, not in the EDA tool
+
+That knowledge turns a five-hour debugging session into a five-minute fix.
+
+---
+
+## Key takeaways
+
+- `yaml.YAMLError` is raised for syntax problems (tabs, missing colons, bad quotes) with a line and column number
+- `FileNotFoundError` is raised when the path is wrong — usually a typo or wrong working folder
+- Wrap `yaml.safe_load()` in a `try / except` block and print friendly messages
+- Use `config.get('key', default)` for optional values, explicit checks for required ones
+- Good error handling turns cryptic failures into actionable messages — it is the single highest-value habit when working with config files
+
+You now know the complete Python–YAML workflow used across semiconductor design teams: **read, write, and recover gracefully from bad input.** Combined with the YAML-writing skills from Parts 1–3, you can read, write, maintain, and debug any configuration file you are asked to touch.
+
+---
+
+<BundleCard />
+
+---
+
+<div class="not-prose" style="margin-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+  <a href="/lesson-13" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-size:0.82rem;text-decoration:none;border:1px solid var(--color-border);color:var(--color-text-muted);font-family:var(--font-ui);transition:all 0.25s ease;">
+    ← Previous
+  </a>
+  <a href="/" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-weight:600;font-size:0.85rem;text-decoration:none;background:var(--color-accent);color:white;font-family:var(--font-ui);transition:all 0.25s ease;">
+    ← Back to Home
+  </a>
+</div>

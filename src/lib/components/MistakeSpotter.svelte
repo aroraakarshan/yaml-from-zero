@@ -135,7 +135,7 @@
 		<!-- Controls -->
 		<div class="ms-controls">
 			<button class="dbtn dbtn-primary" onclick={toggleFix}>
-				{showFix ? 'Hide Fix' : '💡 Show Fix'}
+				{showFix ? 'Hide Fix' : 'Show Fix'}
 			</button>
 			<button class="dbtn" onclick={nextMistake}>
 				Next Mistake →

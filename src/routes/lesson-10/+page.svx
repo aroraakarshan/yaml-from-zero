@@ -131,7 +131,7 @@ Following best practices ensures maintainable and robust YAML configurations:
 - ✓ **Organize logically** — group related settings, separate with blank lines
 - ✓ **Include units** in key names so values are self-documenting
 
-Congratulations — you have completed the YAML from Zero tutorial! You now know everything you need to read, write, and maintain professional YAML configuration files for semiconductor design.
+Congratulations — you now know how to read, write, and maintain professional YAML configuration files for semiconductor design. One step remains: learning how Python scripts consume these files so you can close the loop between your config and the tools that use it.
 
 ---
 
@@ -139,7 +139,7 @@ Congratulations — you have completed the YAML from Zero tutorial! You now know
   <a href="/lesson-09" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-size:0.82rem;text-decoration:none;border:1px solid var(--color-border);color:var(--color-text-muted);font-family:var(--font-ui);transition:all 0.25s ease;">
     ← Previous
   </a>
-  <a href="/" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-weight:600;font-size:0.85rem;text-decoration:none;background:var(--color-accent);color:white;font-family:var(--font-ui);transition:all 0.25s ease;">
-    ← Back to Home
+  <a href="/lesson-11" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-weight:600;font-size:0.85rem;text-decoration:none;background:var(--color-accent);color:white;font-family:var(--font-ui);transition:all 0.25s ease;">
+    Next: Optional · Automation with Python →
   </a>
 </div>

@@ -1,0 +1,114 @@
+<script>
+import ScriptFlowAnimation from '$lib/components/ScriptFlowAnimation.svelte';
+</script>
+
+# Bridge: scripts, tools, and the terminal
+
+You finished Parts 1–3 — that's all the YAML you need to *write* configurations for chip flows. Part 4 is **optional**. It shows how a Python *script* — usually written by your CAD/tools team — actually reads the YAML you wrote and feeds it into an EDA tool.
+
+You will not be expected to write Python after this. The goal is to **recognise what is happening** when something breaks, and to feel comfortable around the file paths, error messages, and one-line commands that appear in chip-design workflows every day.
+
+---
+
+## The big picture
+
+<ScriptFlowAnimation />
+
+You write and edit the YAML. The Python script reads it and tells the tool what to do. The tool runs and produces results.
+
+---
+
+## Five words you keep hearing
+
+Before any code, here is what each of these actually means in plain English.
+
+### Script
+A **script** is a plain text file containing instructions for a computer, written in a programming language. Common file extensions: `.py` (Python), `.sh` (shell). Unlike a compiled program, you can open a script in any text editor and read it.
+
+A *Python script* is just a `.py` file you run by typing `python script_name.py` in the terminal.
+
+### Terminal (also called shell, command line, console)
+The **terminal** is the black-or-white text window where you type commands instead of clicking. Same idea as Cadence's Tcl prompt — text in, text out.
+
+When this tutorial says "run this in the terminal":
+
+```bash
+python my_script.py
+```
+
+…it means: open the terminal, type that line, press Enter.
+
+### File path
+A **file path** is the address of a file on your computer.
+
+- Relative path: `chip_config.yaml` — looks in the folder you are currently in
+- Absolute path: `/home/alice/projects/chip_a/chip_config.yaml` — full address
+
+When a script says "file not found", it almost always means the path is wrong — usually because you ran the script from the wrong folder.
+
+### Library
+A **library** is pre-written code somebody else made, packaged so you can use it. Python's `yaml` library knows how to read and write YAML files — you just call it. Same idea as a `.lib` Liberty file in synthesis: ready-made standard cells you reuse.
+
+### `pip`
+`pip` is the **package installer** for Python — it downloads and installs libraries. You normally run it once per machine:
+
+```bash
+pip install pyyaml
+```
+
+That command says: "fetch the `pyyaml` library and put it where Python can find it." After that, any Python script can use it. In a corporate VLSI environment, your tools team usually runs this on the shared servers — you may never need to.
+
+---
+
+## What does "import" mean?
+
+When Python sees:
+
+```python
+import yaml
+```
+
+…it loads the `yaml` library so the rest of the script can use functions like `yaml.safe_load()`. Same idea as `include "stdlib.v"` at the top of a Verilog module — bring in the building blocks before you use them.
+
+---
+
+## The CAD team / engineer split
+
+In nearly every semiconductor team:
+
+| You (design / verification engineer) | CAD / tools team |
+|---|---|
+| Writes the YAML config | Writes the Python wrapper script |
+| Runs the wrapper to launch a tool | Maintains the wrapper |
+| Reads error messages and fixes the YAML | Fixes the script when needed |
+
+This means: **most error messages you see come from your YAML, not from broken Python**. That is exactly why understanding YAML deeply (Parts 1–3) is far more valuable than learning Python — you will spend 95% of your time editing the config.
+
+---
+
+## What you will see in the next three lessons
+
+- **Lesson 12** — three lines of Python that turn your YAML into something the script can use, plus how to look up specific values. You only need to *recognise* it, not write it.
+- **Lesson 13** — the reverse: how a script writes a YAML report file after a run.
+- **Lesson 14** — what happens when something is wrong: the error messages, what they mean, and how to read them back to fix your YAML.
+
+---
+
+## Key takeaways
+
+- A **script** is a text file with instructions; you run it from a **terminal**
+- A **library** is reusable code; `pip install` fetches one; `import` loads it
+- A **file path** is the address of a file — wrong paths are the #1 cause of "file not found"
+- The **CAD team writes the script**; you write the YAML — error messages usually point back to your YAML
+- Part 4 is for *recognising* what you see, not for writing Python yourself
+
+---
+
+<div class="not-prose" style="margin-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+  <a href="/lesson-10" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-size:0.82rem;text-decoration:none;border:1px solid var(--color-border);color:var(--color-text-muted);font-family:var(--font-ui);transition:all 0.25s ease;">
+    ← Previous
+  </a>
+  <a href="/lesson-12" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-weight:600;font-size:0.85rem;text-decoration:none;background:var(--color-accent);color:white;font-family:var(--font-ui);transition:all 0.25s ease;">
+    Next: Reading YAML in Python →
+  </a>
+</div>

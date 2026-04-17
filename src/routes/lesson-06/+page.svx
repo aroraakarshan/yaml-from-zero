@@ -2,6 +2,33 @@
 import ListInNestingDemo from '$lib/components/ListInNestingDemo.svelte';
 import YamlViewer from '$lib/components/YamlViewer.svelte';
 
+const synthFlow = [
+  { indent: 0, tokens: [{ text: '# Synthesis run config — what a real chip-flow YAML looks like', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'design', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 2, tokens: [{ text: 'top_module', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"alu_top"', type: 'str' }] },
+  { indent: 2, tokens: [{ text: 'rtl_files', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 4, tokens: [{ text: '- ', type: 'dash' }, { text: '"rtl/alu.v"', type: 'str' }] },
+  { indent: 4, tokens: [{ text: '- ', type: 'dash' }, { text: '"rtl/regfile.v"', type: 'str' }] },
+  { indent: 4, tokens: [{ text: '- ', type: 'dash' }, { text: '"rtl/control.v"', type: 'str' }] },
+  { indent: 0, tokens: [] },
+  { indent: 0, tokens: [{ text: 'technology', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 2, tokens: [{ text: 'node', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"7nm"', type: 'str' }] },
+  { indent: 2, tokens: [{ text: 'liberty_files', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 4, tokens: [{ text: '- ', type: 'dash' }, { text: '"libs/std_cells_tt_0p8v_25c.lib"', type: 'str' }] },
+  { indent: 4, tokens: [{ text: '- ', type: 'dash' }, { text: '"libs/std_cells_ss_0p7v_125c.lib"', type: 'str' }] },
+  { indent: 0, tokens: [] },
+  { indent: 0, tokens: [{ text: 'constraints', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 2, tokens: [{ text: 'clock_period_ns', type: 'key' }, { text: ': ', type: 'colon' }, { text: '0.8', type: 'num' }] },
+  { indent: 2, tokens: [{ text: 'clock_uncertainty_ps', type: 'key' }, { text: ': ', type: 'colon' }, { text: '50', type: 'num' }] },
+  { indent: 2, tokens: [{ text: 'sdc_files', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 4, tokens: [{ text: '- ', type: 'dash' }, { text: '"sdc/timing.sdc"', type: 'str' }] },
+  { indent: 4, tokens: [{ text: '- ', type: 'dash' }, { text: '"sdc/io.sdc"', type: 'str' }] },
+  { indent: 0, tokens: [] },
+  { indent: 0, tokens: [{ text: 'options', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 2, tokens: [{ text: 'effort', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"high"', type: 'str' }] },
+  { indent: 2, tokens: [{ text: 'enable_clock_gating', type: 'key' }, { text: ': ', type: 'colon' }, { text: 'true', type: 'bool' }] },
+  { indent: 2, tokens: [{ text: 'max_threads', type: 'key' }, { text: ': ', type: 'colon' }, { text: '8', type: 'num' }] },
+];
 const fullUsb = [
   { indent: 0, tokens: [{ text: '# USB Controller Chip Description', type: 'comment' }] },
   { indent: 0, tokens: [{ text: 'usb_controller', type: 'key' }, { text: ':', type: 'colon' }] },
@@ -101,6 +128,23 @@ Think of it like organizing your backpack:
 - **Backpack** = `usb_controller` (the main container)
 - **Pockets** = `chip_info`, `capabilities`, `specifications`, `required_tests` (the groups)
 - **Items in pockets** = `name`, `voltage`, `"basic_connection_test"`, etc.
+
+---
+
+## A real chip-flow YAML
+
+The USB example above shows the **structure**. Here is what the same structure looks like for a **real synthesis run** — the kind of file you would actually hand to a tool like Synopsys DC or Cadence Genus:
+
+<YamlViewer lines={synthFlow} title="synthesis_run.yaml" />
+
+Notice — **nothing new**. It is the same building blocks:
+
+- Groups (`design`, `technology`, `constraints`, `options`)
+- Lists (`rtl_files`, `liberty_files`, `sdc_files`)
+- Numbers (`clock_period_ns: 0.8`), strings (`"7nm"`), booleans (`true`)
+- Comments to label what is going on
+
+When you read a config from your CAD team, this is what you will see. The keys change (`top_module`, `liberty_files`, `clock_period_ns`) but the **shape** is exactly what you just learned.
 
 ---
 

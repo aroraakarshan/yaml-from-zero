@@ -15,7 +15,7 @@
 
 	const groups: Group[] = [
 		{
-			key: 'chip_info', icon: 'ℹ️', label: 'Chip Info', color: '#0969a8',
+			key: 'chip_info', icon: 'i', label: 'Chip Info', color: '#0969a8',
 			items: [
 				{ key: 'name', value: '"Simple USB Controller"', type: 'str' },
 				{ key: 'version', value: '"1.0"', type: 'str' },
@@ -23,7 +23,7 @@
 			]
 		},
 		{
-			key: 'capabilities', icon: '⚡', label: 'Capabilities', color: '#7c3aed',
+			key: 'capabilities', icon: '+', label: 'Capabilities', color: '#7c3aed',
 			items: [
 				{ key: 'usb_version', value: '"2.0"', type: 'str' },
 				{ key: 'max_speed', value: '480', type: 'num' },
@@ -32,7 +32,7 @@
 			]
 		},
 		{
-			key: 'specifications', icon: '📐', label: 'Specifications', color: '#b45309',
+			key: 'specifications', icon: '#', label: 'Specifications', color: '#b45309',
 			items: [
 				{ key: 'voltage', value: '3.3', type: 'num' },
 				{ key: 'frequency', value: '48', type: 'num' },
@@ -61,7 +61,6 @@
 		<!-- Left: Visual pockets -->
 		<div class="ne-visual">
 			<div class="ne-backpack-label">
-				<span class="ne-bp-icon">🎒</span>
 				<span><strong>usb_controller</strong> (the backpack)</span>
 			</div>
 			{#each groups as group}

@@ -61,6 +61,19 @@
 				{/each}
 			</div>
 		{/each}
+
+		<div class="sidebar-module">
+			<span class="sidebar-module-label">Reference</span>
+			<a
+				href="/glossary"
+				class="sidebar-link"
+				class:active={isActive('glossary')}
+				onclick={closeMobile}
+			>
+				<span class="sidebar-num">📖</span>
+				<span class="sidebar-link-title">Glossary</span>
+			</a>
+		</div>
 	</nav>
 </aside>
 

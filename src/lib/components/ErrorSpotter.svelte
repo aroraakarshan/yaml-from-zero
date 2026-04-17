@@ -15,7 +15,7 @@
 			title: 'Missing space after colon',
 			yaml: [
 				{ text: '# My chip settings', isError: false, explanation: 'This comment line is fine.' },
-				{ text: 'chip_name:"My Processor"', isError: true, explanation: '🐛 Bug found! There is no space after the colon. YAML requires "chip_name: " (colon then space). Without the space, YAML cannot tell where the key ends and the value begins.' },
+				{ text: 'chip_name:"My Processor"', isError: true, explanation: 'Bug found! There is no space after the colon. YAML requires "chip_name: " (colon then space). Without the space, YAML cannot tell where the key ends and the value begins.' },
 				{ text: 'speed: 100', isError: false, explanation: 'This line is correct — space after the colon.' },
 			],
 			fixedYaml: 'chip_name: "My Processor"',
@@ -26,7 +26,7 @@
 			yaml: [
 				{ text: 'design:', isError: false, explanation: 'The parent key — fine.' },
 				{ text: '  name: "processor"', isError: false, explanation: 'Indented 2 spaces — correct.' },
-				{ text: '   frequency: 100', isError: true, explanation: '🐛 Bug found! This line has 3 spaces of indent, but the line above has 2. All children at the same level must use the same number of spaces. Change this to 2 spaces.' },
+				{ text: '   frequency: 100', isError: true, explanation: 'Bug found! This line has 3 spaces of indent, but the line above has 2. All children at the same level must use the same number of spaces. Change this to 2 spaces.' },
 				{ text: '  voltage: 1.2', isError: false, explanation: 'Back to 2 spaces — this one is correct.' },
 			],
 			fixedYaml: '  frequency: 100',
@@ -38,7 +38,7 @@
 				{ text: 'countries:', isError: false, explanation: 'The parent key for a list.' },
 				{ text: '  - "United States"', isError: false, explanation: 'Quoted string — safe.' },
 				{ text: '  - Norway', isError: false, explanation: 'This looks fine, but...' },
-				{ text: '  - NO', isError: true, explanation: '🐛 Bug found! YAML reads NO as the boolean value false — not the country code! You must write "NO" (with quotes) to keep it as text. This is called "the Norway problem."' },
+				{ text: '  - NO', isError: true, explanation: 'Bug found! YAML reads NO as the boolean value false — not the country code! You must write "NO" (with quotes) to keep it as text. This is called "the Norway problem."' },
 				{ text: '  - "SE"', isError: false, explanation: 'Quoted — safe. Always quote short codes.' },
 			],
 			fixedYaml: '  - "NO"',
@@ -48,7 +48,7 @@
 			title: 'Tabs vs spaces',
 			yaml: [
 				{ text: 'config:', isError: false, explanation: 'The parent key.' },
-				{ text: '\tname: "test"', isError: true, explanation: '🐛 Bug found! This line uses a TAB character for indentation. YAML only allows SPACES — never tabs. They look the same but YAML will throw an error. Use your space bar, or configure your editor to convert tabs to spaces.' },
+				{ text: '\tname: "test"', isError: true, explanation: 'Bug found! This line uses a TAB character for indentation. YAML only allows SPACES — never tabs. They look the same but YAML will throw an error. Use your space bar, or configure your editor to convert tabs to spaces.' },
 				{ text: '  value: 100', isError: false, explanation: 'This uses spaces — correct.' },
 			],
 			fixedYaml: '  name: "test"',
@@ -60,7 +60,7 @@
 				{ text: 'processor:', isError: false, explanation: 'The parent key.' },
 				{ text: '  name: "ARM Cortex-M4"', isError: false, explanation: 'First name — fine.' },
 				{ text: '  frequency_mhz: 168', isError: false, explanation: 'Fine.' },
-				{ text: '  name: "Different Name"', isError: true, explanation: '🐛 Bug found! The key "name" appears twice in the same group. YAML silently uses the LAST value and throws away the first one. This is a sneaky bug — you think you set it to "ARM Cortex-M4" but it becomes "Different Name."' },
+				{ text: '  name: "Different Name"', isError: true, explanation: 'Bug found! The key "name" appears twice in the same group. YAML silently uses the LAST value and throws away the first one. This is a sneaky bug — you think you set it to "ARM Cortex-M4" but it becomes "Different Name."' },
 			],
 			fixedYaml: '  model: "Different Name"',
 			hint: 'Can two items in the same group have the exact same label?'
@@ -71,7 +71,7 @@
 				{ text: 'features:', isError: false, explanation: 'The parent key for a list.' },
 				{ text: '  - "USB Controller"', isError: false, explanation: 'Dash style list item — fine.' },
 				{ text: '  - "Ethernet"', isError: false, explanation: 'Same style — fine.' },
-				{ text: '  - [WiFi, Bluetooth]', isError: true, explanation: '🐛 Bug found! This uses square bracket style [WiFi, Bluetooth] while the other items use dash style. Never mix list styles in the same list. Write each item on its own line with a dash.' },
+				{ text: '  - [WiFi, Bluetooth]', isError: true, explanation: 'Bug found! This uses square bracket style [WiFi, Bluetooth] while the other items use dash style. Never mix list styles in the same list. Write each item on its own line with a dash.' },
 				{ text: '  - GPS', isError: false, explanation: 'Back to dash style, but GPS should be quoted since it is text.' },
 			],
 			fixedYaml: '  - "WiFi"\n  - "Bluetooth"',
@@ -81,7 +81,7 @@
 			title: 'Incorrect quoting',
 			yaml: [
 				{ text: 'design_info:', isError: false, explanation: 'The parent key.' },
-				{ text: '  name: My Design', isError: true, explanation: '🐛 Bug found! "My Design" contains a space. Without quotes, YAML might misinterpret it. Always quote text that contains spaces: "My Design".' },
+				{ text: '  name: My Design', isError: true, explanation: 'Bug found! "My Design" contains a space. Without quotes, YAML might misinterpret it. Always quote text that contains spaces: "My Design".' },
 				{ text: '  version: 1.0', isError: false, explanation: 'Numbers do not need quotes — this is fine.' },
 				{ text: '  date: 2024-01-01', isError: false, explanation: 'This looks fine, but YAML will parse it as a date object, not text. If you want it as text, use quotes: "2024-01-01".' },
 			],
@@ -138,7 +138,7 @@
 						<span class="es-line-num">{i + 1}</span>
 						<span class="es-line-text">{line.text.replace('\t', '→   ')}</span>
 						{#if showAnswer && line.isError}
-							<span class="es-bug-badge">🐛</span>
+							<span class="es-bug-badge">✗</span>
 						{/if}
 					</div>
 				{/each}
@@ -163,7 +163,7 @@
 		</div>
 
 		<div class="es-controls">
-			<button class="dbtn" onclick={reveal}>💡 Show answer</button>
+			<button class="dbtn" onclick={reveal}>Show answer</button>
 			<button class="dbtn dbtn-primary" onclick={nextChallenge}>Next challenge →</button>
 		</div>
 	</div>

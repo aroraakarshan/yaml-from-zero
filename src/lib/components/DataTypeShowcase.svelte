@@ -61,7 +61,7 @@
 			{/each}
 		</div>
 		<div class="dt-note" style="border-color: {current.color};">
-			💡 {current.note}
+			{current.note}
 		</div>
 	</div>
 </div>

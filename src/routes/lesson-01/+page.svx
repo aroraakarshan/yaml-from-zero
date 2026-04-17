@@ -163,7 +163,7 @@ In the next lesson, we'll learn the basic rules for writing YAML files. Don't wo
 ---
 
 <div class="not-prose" style="margin-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
-  <span style="font-family:var(--font-ui);font-size:0.82rem;color:var(--color-text-muted);">Lesson 1 of 10</span>
+  <span style="font-family:var(--font-ui);font-size:0.82rem;color:var(--color-text-muted);">Part 1 · Lesson 1 of 13</span>
   <a href="/lesson-02" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-weight:600;font-size:0.85rem;text-decoration:none;background:var(--color-accent);color:white;font-family:var(--font-ui);transition:all 0.25s ease;">
     Next: Writing Your First YAML →
   </a>

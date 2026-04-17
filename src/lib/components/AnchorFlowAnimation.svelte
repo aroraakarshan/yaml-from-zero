@@ -146,14 +146,16 @@ border-radius: 14px; overflow: hidden; margin: 2rem 0;
 
 .af-split {
 display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+align-items: stretch;
 margin: 0 1.5rem; background: var(--color-border);
 border-radius: 8px; overflow: hidden;
+min-height: min-content;
 }
 
 .af-code {
 background: var(--color-bg-card); padding: 12px 0;
 font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.9;
-overflow: hidden;
+min-height: min-content;
 }
 
 .af-code-label {
@@ -170,7 +172,7 @@ padding: 1px 16px; white-space: pre; transition: all 0.3s ease;
 
 .af-resolved {
 background: var(--color-bg-primary); padding: 12px 20px;
-overflow: hidden;
+min-height: min-content;
 }
 
 .af-resolved-label {

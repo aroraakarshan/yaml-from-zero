@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { modules } from '$lib/data/modules';
+	import BundleCard from '$lib/components/BundleCard.svelte';
 </script>
 
 <div class="not-prose">
@@ -45,6 +46,8 @@
 			</div>
 		{/each}
 	</div>
+
+	<BundleCard />
 </div>
 
 <style>

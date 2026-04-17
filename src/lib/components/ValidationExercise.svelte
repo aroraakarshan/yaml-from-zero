@@ -12,20 +12,20 @@
 	const brokenLines: Line[] = [
 		{ text: '# Semiconductor Design Configuration', isError: false, errorType: '', explanation: 'Comment — fine.' },
 		{ text: 'project_info:', isError: false, errorType: '', explanation: 'Parent key — fine.' },
-		{ text: '  name: 5G Modem Design', isError: true, errorType: 'Missing quotes', explanation: '🐛 "5G Modem Design" contains spaces. Without quotes, YAML might misinterpret it. Fix: "5G Modem Design"' },
-		{ text: '    team_lead:"Sarah Chen"', isError: true, errorType: 'Wrong indent + missing space', explanation: '🐛 Two errors! (1) Indented 4 spaces instead of 2 — wrong level. (2) No space after the colon. Fix: ··team_lead: "Sarah Chen"' },
+		{ text: '  name: 5G Modem Design', isError: true, errorType: 'Missing quotes', explanation: '"5G Modem Design" contains spaces. Without quotes, YAML might misinterpret it. Fix: "5G Modem Design"' },
+		{ text: '    team_lead:"Sarah Chen"', isError: true, errorType: 'Wrong indent + missing space', explanation: 'Two errors! (1) Indented 4 spaces instead of 2 — wrong level. (2) No space after the colon. Fix: ··team_lead: "Sarah Chen"' },
 		{ text: '  version: 2.0', isError: false, errorType: '', explanation: 'This line is correct by itself, but...' },
-		{ text: '  version: 3.0', isError: true, errorType: 'Duplicate key', explanation: '🐛 "version" appears twice! YAML silently uses the last value and throws away the first. Fix: remove one of them.' },
+		{ text: '  version: 3.0', isError: true, errorType: 'Duplicate key', explanation: '"version" appears twice! YAML silently uses the last value and throws away the first. Fix: remove one of them.' },
 		{ text: '', isError: false, errorType: '', explanation: '' },
 		{ text: 'specifications:', isError: false, errorType: '', explanation: 'Parent key — fine.' },
-		{ text: '- frequency_ghz: 2.4', isError: true, errorType: 'Wrong list format', explanation: '🐛 The dash is not indented under specifications. It should be at 2 spaces. Fix: ··frequency_ghz: 2.4 (or use ··- frequency_ghz: 2.4 if you want a list)' },
-		{ text: '- power_consumption_mw:150', isError: true, errorType: 'Missing space after colon', explanation: '🐛 No space after the colon! And wrong indentation. Fix: ··power_consumption_mw: 150' },
-		{ text: '  - voltage_v: 0.8', isError: true, errorType: 'Mixed indentation', explanation: '🐛 This has a dash at 2 spaces, but the items above have dashes at 0 spaces. Inconsistent! Fix: decide on one format and stick with it.' },
+		{ text: '- frequency_ghz: 2.4', isError: true, errorType: 'Wrong list format', explanation: 'The dash is not indented under specifications. It should be at 2 spaces. Fix: ··frequency_ghz: 2.4 (or use ··- frequency_ghz: 2.4 if you want a list)' },
+		{ text: '- power_consumption_mw:150', isError: true, errorType: 'Missing space after colon', explanation: 'No space after the colon! And wrong indentation. Fix: ··power_consumption_mw: 150' },
+		{ text: '  - voltage_v: 0.8', isError: true, errorType: 'Mixed indentation', explanation: 'This has a dash at 2 spaces, but the items above have dashes at 0 spaces. Inconsistent! Fix: decide on one format and stick with it.' },
 		{ text: '', isError: false, errorType: '', explanation: '' },
 		{ text: 'testing:', isError: false, errorType: '', explanation: 'Parent key — fine.' },
-		{ text: '  functional_test: TRUE', isError: true, errorType: 'Wrong boolean', explanation: '🐛 YAML booleans are lowercase: true, not TRUE. While YAML 1.1 accepts TRUE, it is inconsistent and confusing. Fix: true' },
+		{ text: '  functional_test: TRUE', isError: true, errorType: 'Wrong boolean', explanation: 'YAML booleans are lowercase: true, not TRUE. While YAML 1.1 accepts TRUE, it is inconsistent and confusing. Fix: true' },
 		{ text: '  performance_test: yes', isError: false, errorType: '', explanation: '"yes" works as a boolean in YAML 1.1, but "true" is clearer and more consistent.' },
-		{ text: '  power_test: True', isError: true, errorType: 'Inconsistent boolean', explanation: '🐛 "True" (capitalized) is inconsistent with the others. Use lowercase "true" everywhere. Fix: true' },
+		{ text: '  power_test: True', isError: true, errorType: 'Inconsistent boolean', explanation: '"True" (capitalized) is inconsistent with the others. Use lowercase "true" everywhere. Fix: true' },
 	];
 
 	const correctedLines = [
@@ -126,7 +126,7 @@
 
 		<div class="ve-controls">
 			{#if foundCount === errorCount && !showCorrected}
-				<button class="dbtn dbtn-primary" onclick={() => (showCorrected = true)}>🎉 Show corrected file</button>
+				<button class="dbtn dbtn-primary" onclick={() => (showCorrected = true)}>Show corrected file</button>
 			{/if}
 			{#if showCorrected}
 				<button class="dbtn" onclick={reset}>↻ Try again</button>
@@ -160,13 +160,11 @@
 	.ve-split {
 		display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
 		background: var(--color-border); border-radius: 8px; overflow: hidden;
-		height: 420px;
 	}
 
 	.ve-pane {
 		background: var(--color-bg-card); padding: 0;
 		font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.9;
-		overflow-y: auto;
 	}
 
 	.ve-pane-label {
@@ -223,6 +221,6 @@
 	}
 
 	@media (max-width: 600px) {
-		.ve-split { grid-template-columns: 1fr; height: 600px; }
+		.ve-split { grid-template-columns: 1fr; }
 	}
 </style>

@@ -78,5 +78,31 @@ export const modules: Module[] = [
 				description: 'Naming conventions, documentation, and formatting rules'
 			}
 		]
+	},
+	{
+		id: 4,
+		title: 'Optional · Automation with Python',
+		lessons: [
+			{
+				title: 'Bridge: scripts, tools & terminal',
+				slug: 'lesson-11',
+				description: 'What a script is, what pip does, and how Python fits into a chip flow'
+			},
+			{
+				title: 'Reading YAML in Python',
+				slug: 'lesson-12',
+				description: 'Load a YAML file into Python and use its values in scripts'
+			},
+			{
+				title: 'Writing YAML from Python',
+				slug: 'lesson-13',
+				description: 'Save Python data back out as clean YAML files'
+			},
+			{
+				title: 'Handling YAML Errors in Python',
+				slug: 'lesson-14',
+				description: 'Catch syntax errors and missing files gracefully'
+			}
+		]
 	}
 ];
