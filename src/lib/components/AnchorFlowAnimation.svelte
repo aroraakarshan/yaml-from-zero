@@ -147,7 +147,7 @@ border-radius: 14px; overflow: hidden; margin: 2rem 0;
 .af-split {
 display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
 margin: 0 1.5rem; background: var(--color-border);
-border-radius: 8px; overflow: hidden; height: 520px;
+border-radius: 8px; overflow: hidden;
 }
 
 .af-code {
@@ -220,6 +220,6 @@ to { opacity: 1; transform: translateY(0); }
 }
 
 @media (max-width: 600px) {
-.af-split { grid-template-columns: 1fr; height: 600px; }
+.af-split { grid-template-columns: 1fr; }
 }
 </style>
