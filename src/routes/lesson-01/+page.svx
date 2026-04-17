@@ -1,4 +1,5 @@
 <script>
+import LessonHeader from '$lib/components/LessonHeader.svelte';
 import FormatCompare from '$lib/components/FormatCompare.svelte';
 import LanguageHubAnimation from '$lib/components/LanguageHubAnimation.svelte';
 import SemiconConfigCards from '$lib/components/SemiconConfigCards.svelte';
@@ -24,6 +25,8 @@ const firstLook = [
 </script>
 
 # What is YAML and Why Should You Care?
+
+<LessonHeader minutes={6} learn={["What YAML is and why chip-design teams use it everywhere", "How YAML compares to XML, JSON, and INI files", "What a real semiconductor YAML configuration looks like"]} />
 
 ## Hello, YAML Beginner
 

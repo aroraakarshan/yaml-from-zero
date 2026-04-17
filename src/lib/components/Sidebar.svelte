@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { modules } from '$lib/data/modules';
 	import { page } from '$app/state';
+	import { tick } from 'svelte';
+	import SearchBar from './SearchBar.svelte';
 
 	let mobileOpen = $state(false);
 
@@ -15,10 +17,23 @@
 	function closeMobile() {
 		mobileOpen = false;
 	}
+
+	async function openMobile() {
+		mobileOpen = true;
+		await tick();
+		const active = document.querySelector('.sidebar .sidebar-link.active');
+		if (active) {
+			active.scrollIntoView({ block: 'center', behavior: 'auto' });
+		}
+	}
 </script>
 
 <!-- Mobile toggle -->
-<button class="sidebar-toggle" onclick={() => (mobileOpen = !mobileOpen)} aria-label="Toggle menu">
+<button
+	class="sidebar-toggle"
+	onclick={() => (mobileOpen ? closeMobile() : openMobile())}
+	aria-label="Toggle menu"
+>
 	<svg width="20" height="20" viewBox="0 0 20 20" fill="none">
 		{#if mobileOpen}
 			<path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.5" />
@@ -42,6 +57,10 @@
 		</svg>
 		<span class="sidebar-title">YAML from Zero</span>
 	</a>
+
+	<div class="sidebar-search">
+		<SearchBar />
+	</div>
 
 	<nav class="sidebar-nav">
 		{#each modules as mod}
@@ -70,7 +89,7 @@
 				class:active={isActive('glossary')}
 				onclick={closeMobile}
 			>
-				<span class="sidebar-num">📖</span>
+				<span class="sidebar-num">§</span>
 				<span class="sidebar-link-title">Glossary</span>
 			</a>
 		</div>
@@ -132,6 +151,11 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
+	}
+
+	.sidebar-search {
+		margin-bottom: 2rem;
+		padding: 0 0.25rem;
 	}
 
 	.sidebar-module {

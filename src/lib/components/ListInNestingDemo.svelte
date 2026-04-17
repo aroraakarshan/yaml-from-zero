@@ -21,7 +21,7 @@ expanded[key] = !expanded[key];
 <!-- Left: clickable pockets -->
 <div class="ln-visual">
 <div class="ln-parent-label">
-<span>🔌</span>
+
 <span><strong>usb_controller</strong></span>
 </div>
 
@@ -29,7 +29,7 @@ expanded[key] = !expanded[key];
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class="ln-pocket" class:open={expanded.chip_info} style="--pocket-color: #0969a8;" onclick={() => toggle('chip_info')}>
 <div class="ln-pocket-head">
-<span>ℹ️</span>
+<span class="ln-mark">i</span>
 <span class="ln-pocket-name">chip_info</span>
 <span class="ln-pocket-type">nested group</span>
 <span class="ln-pocket-arrow">{expanded.chip_info ? '▾' : '▸'}</span>
@@ -52,7 +52,7 @@ expanded[key] = !expanded[key];
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class="ln-pocket" class:open={expanded.capabilities} style="--pocket-color: #7c3aed;" onclick={() => toggle('capabilities')}>
 <div class="ln-pocket-head">
-<span>⚡</span>
+<span class="ln-mark">+</span>
 <span class="ln-pocket-name">capabilities</span>
 <span class="ln-pocket-type">nested group</span>
 <span class="ln-pocket-arrow">{expanded.capabilities ? '▾' : '▸'}</span>
@@ -71,7 +71,7 @@ expanded[key] = !expanded[key];
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class="ln-pocket" class:open={expanded.specifications} style="--pocket-color: #b45309;" onclick={() => toggle('specifications')}>
 <div class="ln-pocket-head">
-<span>📐</span>
+<span class="ln-mark">#</span>
 <span class="ln-pocket-name">specifications</span>
 <span class="ln-pocket-type">nested group</span>
 <span class="ln-pocket-arrow">{expanded.specifications ? '▾' : '▸'}</span>
@@ -90,7 +90,7 @@ expanded[key] = !expanded[key];
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class="ln-pocket" class:open={expanded.required_tests} style="--pocket-color: #dc2626;" onclick={() => toggle('required_tests')}>
 <div class="ln-pocket-head">
-<span>🧪</span>
+<span class="ln-mark">T</span>
 <span class="ln-pocket-name">required_tests</span>
 <span class="ln-pocket-type">simple list</span>
 <span class="ln-pocket-arrow">{expanded.required_tests ? '▾' : '▸'}</span>
@@ -161,6 +161,12 @@ background: var(--color-border); border-radius: 8px; overflow: hidden;
 display: flex; align-items: center; gap: 8px;
 font-family: var(--font-ui); font-size: 0.85rem; color: var(--color-text-secondary);
 margin-bottom: 14px;
+}
+.ln-mark {
+display: inline-flex; align-items: center; justify-content: center;
+width: 18px; height: 18px; border-radius: 4px;
+background: var(--pocket-color, #c45d2c); color: #fff;
+font-family: var(--font-ui); font-size: 0.65rem; font-weight: 700;
 }
 
 .ln-pocket {

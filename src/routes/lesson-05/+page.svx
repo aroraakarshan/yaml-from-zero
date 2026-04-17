@@ -1,4 +1,5 @@
 <script>
+import LessonHeader from '$lib/components/LessonHeader.svelte';
 import MultilineDemo from '$lib/components/MultilineDemo.svelte';
 import YamlViewer from '$lib/components/YamlViewer.svelte';
 
@@ -34,6 +35,8 @@ const indentRuleExample = [
 </script>
 
 # Long Text & Multi-line
+
+<LessonHeader minutes={5} learn={["When to use | (pipe) to keep line breaks exactly as typed", "When to use > (fold) to merge lines into one paragraph", "How to embed multi-line descriptions, scripts, or log messages"]} />
 
 So far, all our values have been short — a name, a number, true or false. But sometimes you need to write a **long description** or a **multi-line note**. Maybe you want to document what a project does, or store a shell script inside your YAML.
 

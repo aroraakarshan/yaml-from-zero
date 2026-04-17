@@ -1,4 +1,5 @@
 <script>
+import LessonHeader from '$lib/components/LessonHeader.svelte';
 import ListInNestingDemo from '$lib/components/ListInNestingDemo.svelte';
 import YamlViewer from '$lib/components/YamlViewer.svelte';
 
@@ -75,6 +76,8 @@ const fullUsb = [
 </script>
 
 # Putting It All Together
+
+<LessonHeader minutes={6} learn={["How to combine nesting and lists into a full real-world file", "Reading a production synthesis-flow YAML end-to-end", "A clean checklist of every YAML building block you now know"]} />
 
 Congratulations! You now know all the building blocks of YAML:
 

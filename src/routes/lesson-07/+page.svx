@@ -1,4 +1,5 @@
 <script>
+import LessonHeader from '$lib/components/LessonHeader.svelte';
 import ErrorSpotter from '$lib/components/ErrorSpotter.svelte';
 import YamlViewer from '$lib/components/YamlViewer.svelte';
 import FaqAccordion from '$lib/components/FaqAccordion.svelte';
@@ -40,6 +41,8 @@ const errorMessages = [
 
 # Common Gotchas
 
+<LessonHeader minutes={8} learn={["The 6 mistakes that cause 90% of YAML errors", "The Norway / YES-NO boolean trap and how to avoid it", "Why duplicate keys are silently overwritten"]} />
+
 When working with YAML files in semiconductor design, even small mistakes can cause big problems. A missing space or wrong indentation might prevent your design tools from running correctly. Learning to identify and fix common YAML mistakes will save you time and frustration.
 
 ---
@@ -64,7 +67,14 @@ This file has **four errors**:
 1. `name: 5G Modem Design` — needs quotes (contains a space)
 2. `team_lead:"Sarah Chen"` — missing space after colon, and wrong indentation (4 spaces instead of 2)
 3. `version` appears twice — duplicate key!
-4. `TRUE`, `yes`, `True` — inconsistent boolean formats
+4. `TRUE`, `yes`, `True` — use lowercase `true` / `false` everywhere
+
+<div class="not-prose" style="margin: 1.5rem 0; padding: 1rem 1.25rem; border-left: 3px solid #c45d2c; background: #fbf6ee; border-radius: 6px;">
+  <strong style="color: #c45d2c; font-family: var(--font-ui); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em;">Footnote · the Norway bug</strong>
+  <p style="margin: 0.5rem 0 0; font-size: 0.88rem; line-height: 1.55; color: #4a3a26;">
+  You may read online that YAML turns <code>NO</code>, <code>yes</code>, <code>on</code>, <code>off</code> into booleans — the famous "Norway problem" where the country code <code>NO</code> becomes <code>false</code>. Modern YAML (1.2) only accepts lowercase <code>true</code> and <code>false</code>, so this is only a trap in older YAML 1.1 files. Rule of thumb: always lowercase, always quote any single-word value that could be ambiguous.
+  </p>
+</div>
 
 ### The corrected file:
 

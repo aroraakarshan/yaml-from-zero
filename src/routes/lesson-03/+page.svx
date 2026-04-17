@@ -1,4 +1,5 @@
 <script>
+import LessonHeader from '$lib/components/LessonHeader.svelte';
 import NestingAnimation from '$lib/components/NestingAnimation.svelte';
 import IndentationTree from '$lib/components/IndentationTree.svelte';
 import NestingExplorer from '$lib/components/NestingExplorer.svelte';
@@ -32,6 +33,8 @@ const nestingExample = [
 </script>
 
 # Organizing Information Like a Pro
+
+<LessonHeader minutes={8} learn={["How indentation creates nested groups — like folders within folders", "The 2-space rule and why tabs are forbidden", "How to read and write any nested YAML structure"]} />
 
 Great job! You have learned the basics of YAML. Now we will learn how to organize more complex information. Think of this lesson as learning how to organize a big filing cabinet instead of just a simple folder.
 

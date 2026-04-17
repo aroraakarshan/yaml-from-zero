@@ -15,7 +15,9 @@
 				for (const entry of entries) {
 					if (entry.isIntersecting) {
 						entry.target.classList.add('visible');
-						observer.unobserve(entry.target);
+					} else if (entry.boundingClientRect.top > 0) {
+						// Element scrolled below the viewport — reset so it can fade in again
+						entry.target.classList.remove('visible');
 					}
 				}
 			},
@@ -26,14 +28,12 @@
 			const proseSelectors =
 				'.prose > h1, .prose > h2, .prose > h3, .prose > p, .prose > table, .prose > blockquote, .prose > ul, .prose > ol, .prose > hr, .prose > pre, .prose > .not-prose, .prose > div';
 			document.querySelectorAll(proseSelectors).forEach((el, i) => {
-				if (!el.classList.contains('animate-in') && !el.classList.contains('visible')) {
+				if (!el.classList.contains('animate-in')) {
 					el.classList.add('animate-in');
 					(el as HTMLElement).style.transitionDelay = `${Math.min(i * 0.04, 0.2)}s`;
+					observer.observe(el);
 				}
 			});
-			document
-				.querySelectorAll('.animate-in:not(.visible)')
-				.forEach((el) => observer.observe(el));
 		}
 
 		function buildTOC() {

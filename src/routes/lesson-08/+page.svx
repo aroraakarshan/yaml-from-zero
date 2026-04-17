@@ -1,4 +1,5 @@
 <script>
+import LessonHeader from '$lib/components/LessonHeader.svelte';
 import ValidationExercise from '$lib/components/ValidationExercise.svelte';
 import FaqAccordion from '$lib/components/FaqAccordion.svelte';
 
@@ -17,6 +18,8 @@ const toolFaq = [
 </script>
 
 # Validation & Debugging
+
+<LessonHeader minutes={6} learn={["How to read a YAML error message line-by-line", "How to validate your file before handing it to a tool", "A 60-second pre-flight checklist you can apply to any file"]} />
 
 When working with YAML files in semiconductor design, even small mistakes can cause big problems. A missing space or wrong indentation might prevent your design tools from running correctly. In this lesson, you will learn **tools and techniques** to catch errors early.
 

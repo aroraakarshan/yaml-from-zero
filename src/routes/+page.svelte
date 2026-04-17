@@ -7,6 +7,7 @@
 	<div class="landing-header">
 		<div class="landing-links">
 			<a href="https://akarshanarora.com" target="_blank" rel="noopener">Who am I</a>
+			<a href="/glossary">Glossary</a>
 			<a href="https://www.linkedin.com/in/aroraakarshan/" target="_blank" rel="noopener"
 				>LinkedIn</a
 			>

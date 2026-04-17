@@ -1,8 +1,11 @@
 <script>
+import LessonHeader from '$lib/components/LessonHeader.svelte';
 import ScriptFlowAnimation from '$lib/components/ScriptFlowAnimation.svelte';
 </script>
 
 # Bridge: scripts, tools, and the terminal
+
+<LessonHeader minutes={5} learn={["What a script, terminal, file path, and library actually are", "How the YAML → Python → EDA-tool flow works at a high level", "Who writes what: the CAD-team / engineer split"]} />
 
 You finished Parts 1–3 — that's all the YAML you need to *write* configurations for chip flows. Part 4 is **optional**. It shows how a Python *script* — usually written by your CAD/tools team — actually reads the YAML you wrote and feeds it into an EDA tool.
 

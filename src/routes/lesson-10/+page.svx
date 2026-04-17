@@ -1,4 +1,5 @@
 <script>
+import LessonHeader from '$lib/components/LessonHeader.svelte';
 import YamlViewer from '$lib/components/YamlViewer.svelte';
 
 const goodNames = [
@@ -44,6 +45,8 @@ const docExample = [
 </script>
 
 # Style & Best Practices
+
+<LessonHeader minutes={5} learn={["Naming conventions that stay readable six months later", "How to organise large files with sections and comments", "A professional style checklist to apply to every file"]} />
 
 Just like keeping your desk organized helps you work better, following good practices with YAML will make your files easier to read, share, and maintain. Let's learn some simple habits that will make you look like a pro!
 

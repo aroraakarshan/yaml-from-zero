@@ -125,7 +125,7 @@
 	<div class="p2y-ctrls">
 		<button class="dbtn" onclick={() => go(step - 1)} disabled={step === 0}>← Back</button>
 		<button class="dbtn dbtn-primary" onclick={() => go(step + 1)} disabled={step === 4}>
-			{step === 4 ? 'Done ✓' : 'Next →'}
+			{step === 4 ? 'Done ✓' : 'Next'}
 		</button>
 		<button class="dbtn" onclick={() => go(0)}>↻ Reset</button>
 		<span class="p2y-pips">

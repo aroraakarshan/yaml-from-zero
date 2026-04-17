@@ -1,3 +1,20 @@
+<script>
+import { onMount } from 'svelte';
+import BundleCard from '$lib/components/BundleCard.svelte';
+
+onMount(() => {
+  const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  document.querySelectorAll('#lesson-content p > strong:first-child').forEach((s) => {
+    const p = s.parentElement;
+    if (p && !p.id) p.id = slug(s.textContent || '');
+  });
+  if (location.hash) {
+    const el = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+});
+</script>
+
 # Glossary
 
 A quick, plain-English lookup for every technical word that appears in the tutorial. Use it whenever a term feels fuzzy — no shame in coming back here often.
@@ -101,6 +118,8 @@ A quick, plain-English lookup for every technical word that appears in the tutor
 **EDA tool** — Electronic Design Automation tool (Cadence, Synopsys, Mentor). They typically read configs (YAML, Tcl, SDC) and produce reports.
 
 ---
+
+<BundleCard />
 
 <div class="not-prose" style="margin-top:2rem;display:flex;justify-content:center;">
   <a href="/" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-weight:600;font-size:0.85rem;text-decoration:none;background:var(--color-accent);color:white;font-family:var(--font-ui);transition:all 0.25s ease;">

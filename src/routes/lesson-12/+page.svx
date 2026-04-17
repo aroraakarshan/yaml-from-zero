@@ -1,4 +1,5 @@
 <script>
+import LessonHeader from '$lib/components/LessonHeader.svelte';
 import YamlToDictAnimation from '$lib/components/YamlToDictAnimation.svelte';
 import YamlViewer from '$lib/components/YamlViewer.svelte';
 
@@ -12,6 +13,8 @@ const semiconExample = [
 </script>
 
 # Reading YAML in Python
+
+<LessonHeader minutes={8} learn={["How yaml.safe_load() turns your YAML into a Python dictionary", "How to look up specific values: config['clock_period_ns']", "Recognising — not writing — the 3 lines of Python every script has"]} />
 
 Your YAML file is a static text file. To actually *use* its values — to run a simulation, generate a report, or pass settings to a tool — something has to read it. In semiconductor workflows, that "something" is almost always a **Python script**.
 

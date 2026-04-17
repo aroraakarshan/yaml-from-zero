@@ -1,4 +1,5 @@
 <script>
+import LessonHeader from '$lib/components/LessonHeader.svelte';
 import ListBuilder from '$lib/components/ListBuilder.svelte';
 import ObjectListBuilder from '$lib/components/ObjectListBuilder.svelte';
 import YamlViewer from '$lib/components/YamlViewer.svelte';
@@ -64,6 +65,8 @@ const faqItems = [
 </script>
 
 # Making Lists
+
+<LessonHeader minutes={7} learn={["How the dash ( - ) creates a list of items", "Simple lists vs. lists-of-groups (objects in lists)", "How to put lists inside nested groups and vice versa"]} />
 
 Great job! You have learned how to organize information into groups with indentation. Now we will learn how to list many similar items — like a bullet-point list in a document.
 

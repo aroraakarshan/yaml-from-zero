@@ -1,8 +1,11 @@
 <script>
+import LessonHeader from '$lib/components/LessonHeader.svelte';
 import BundleCard from '$lib/components/BundleCard.svelte';
 </script>
 
 # Handling YAML Errors in Python
+
+<LessonHeader minutes={7} learn={["The two errors you will actually hit: YAMLError and FileNotFoundError", "How to read the line/column numbers in an error message", "Wrapping yaml.safe_load() in try/except for friendly failures"]} />
 
 Real files are not always clean. A colleague fat-fingers a tab instead of a space, a script points at the wrong folder, or a forgotten quote breaks a value. When this happens, `yaml.safe_load()` will stop your program with an error — *unless* you handle it gracefully.
 

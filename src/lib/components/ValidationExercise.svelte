@@ -159,12 +159,13 @@
 
 	.ve-split {
 		display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
-		background: var(--color-border); border-radius: 8px; overflow: hidden;
+		background: var(--color-border); border-radius: 8px;
 	}
 
 	.ve-pane {
 		background: var(--color-bg-card); padding: 0;
 		font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.9;
+		min-width: 0;
 	}
 
 	.ve-pane-label {
@@ -178,7 +179,7 @@
 	.ve-pane-label.good { color: #15803d; }
 
 	.ve-line {
-		display: flex; align-items: center; gap: 8px;
+		display: flex; align-items: flex-start; gap: 8px;
 		padding: 1px 16px; cursor: pointer;
 		transition: background 0.15s;
 	}
@@ -192,8 +193,14 @@
 	.ve-num {
 		font-size: 0.68rem; color: var(--color-text-muted); min-width: 18px; text-align: right;
 		user-select: none;
+		padding-top: 3px;
 	}
-	.ve-text { white-space: pre; }
+	.ve-text {
+		white-space: pre-wrap;
+		word-break: break-word;
+		flex: 1;
+		min-width: 0;
+	}
 
 	.ve-error-tag {
 		font-family: var(--font-ui); font-size: 0.6rem; font-weight: 600;

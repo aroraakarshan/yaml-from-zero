@@ -1,4 +1,5 @@
 <script>
+import LessonHeader from '$lib/components/LessonHeader.svelte';
 import KeyValueBuilder from '$lib/components/KeyValueBuilder.svelte';
 import DataTypeShowcase from '$lib/components/DataTypeShowcase.svelte';
 import FirstYamlBuilder from '$lib/components/FirstYamlBuilder.svelte';
@@ -76,6 +77,8 @@ const indentExample = [
 </script>
 
 # Learning YAML Step by Step
+
+<LessonHeader minutes={7} learn={["The YAML colon-space rule: key: value", "The four basic data types: string, number, boolean, null", "How to spot and fix the most common beginner mistakes"]} />
 
 ## Don't Worry, YAML is Easy
 

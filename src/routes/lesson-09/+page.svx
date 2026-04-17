@@ -1,4 +1,5 @@
 <script>
+import LessonHeader from '$lib/components/LessonHeader.svelte';
 import AnchorFlowAnimation from '$lib/components/AnchorFlowAnimation.svelte';
 import YamlViewer from '$lib/components/YamlViewer.svelte';
 import FaqAccordion from '$lib/components/FaqAccordion.svelte';
@@ -58,6 +59,8 @@ const faqItems = [
 </script>
 
 # Anchors & Aliases
+
+<LessonHeader minutes={7} learn={["How & creates an anchor (a reusable template block)", "How *name references an anchor and << merges its values", "How to keep a large config DRY — edit once, propagate everywhere"]} />
 
 Sometimes you have the same settings that need to be used in multiple places. Instead of copying and pasting the same information over and over, YAML has a special feature called "anchors" and "references" that lets you reuse information.
 

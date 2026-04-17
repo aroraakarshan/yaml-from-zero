@@ -97,7 +97,7 @@
 			{/each}
 		</div>
 		<button class="btn primary" onclick={next} disabled={step === 4}>
-			{step === 0 ? 'Start' : step === 4 ? 'Done' : 'Next'}
+			{step === 0 ? 'Start' : step === 4 ? 'Done ✓' : 'Next'}
 		</button>
 	</div>
 </div>
