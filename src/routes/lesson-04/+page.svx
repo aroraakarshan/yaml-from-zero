@@ -1,0 +1,153 @@
+<script>
+import ListBuilder from '$lib/components/ListBuilder.svelte';
+import ObjectListBuilder from '$lib/components/ObjectListBuilder.svelte';
+import YamlViewer from '$lib/components/YamlViewer.svelte';
+import FaqAccordion from '$lib/components/FaqAccordion.svelte';
+
+const listInGroup = [
+  { indent: 0, tokens: [{ text: 'chip_tests', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 2, tokens: [{ text: 'project_name', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"My First Chip Tests"', type: 'str' }] },
+  { indent: 0, tokens: [] },
+  { indent: 2, tokens: [{ text: '# List of different tests to run', type: 'comment' }] },
+  { indent: 2, tokens: [{ text: 'test_list', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 4, tokens: [{ text: '- ', type: 'dash' }, { text: '"power_test"', type: 'str' }] },
+  { indent: 4, tokens: [{ text: '- ', type: 'dash' }, { text: '"speed_test"', type: 'str' }] },
+  { indent: 4, tokens: [{ text: '- ', type: 'dash' }, { text: '"temperature_test"', type: 'str' }] },
+];
+
+const objectsWithNesting = [
+  { indent: 0, tokens: [{ text: '# Test Configuration for My Chip', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'chip_tests', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 2, tokens: [{ text: 'project_name', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"My First Chip Tests"', type: 'str' }] },
+  { indent: 0, tokens: [] },
+  { indent: 2, tokens: [{ text: 'test_list', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 4, tokens: [{ text: '- ', type: 'dash' }, { text: 'name', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"power_test"', type: 'str' }] },
+  { indent: 6, tokens: [{ text: 'duration', type: 'key' }, { text: ': ', type: 'colon' }, { text: '30', type: 'num' }, { text: '        # minutes', type: 'comment' }] },
+  { indent: 6, tokens: [{ text: 'important', type: 'key' }, { text: ': ', type: 'colon' }, { text: 'true', type: 'bool' }] },
+  { indent: 0, tokens: [] },
+  { indent: 4, tokens: [{ text: '- ', type: 'dash' }, { text: 'name', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"speed_test"', type: 'str' }] },
+  { indent: 6, tokens: [{ text: 'duration', type: 'key' }, { text: ': ', type: 'colon' }, { text: '15', type: 'num' }, { text: '        # minutes', type: 'comment' }] },
+  { indent: 6, tokens: [{ text: 'important', type: 'key' }, { text: ': ', type: 'colon' }, { text: 'true', type: 'bool' }] },
+  { indent: 0, tokens: [] },
+  { indent: 4, tokens: [{ text: '- ', type: 'dash' }, { text: 'name', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"heat_test"', type: 'str' }] },
+  { indent: 6, tokens: [{ text: 'duration', type: 'key' }, { text: ': ', type: 'colon' }, { text: '60', type: 'num' }, { text: '        # minutes', type: 'comment' }] },
+  { indent: 6, tokens: [{ text: 'important', type: 'key' }, { text: ': ', type: 'colon' }, { text: 'false', type: 'bool' }] },
+  { indent: 0, tokens: [] },
+  { indent: 4, tokens: [{ text: '- ', type: 'dash' }, { text: 'name', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"basic_function_test"', type: 'str' }] },
+  { indent: 6, tokens: [{ text: 'duration', type: 'key' }, { text: ': ', type: 'colon' }, { text: '10', type: 'num' }, { text: '        # minutes', type: 'comment' }] },
+  { indent: 6, tokens: [{ text: 'important', type: 'key' }, { text: ': ', type: 'colon' }, { text: 'true', type: 'bool' }] },
+];
+
+const deepNesting = [
+  { indent: 0, tokens: [{ text: 'project', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 2, tokens: [{ text: 'name', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"My Chip"', type: 'str' }] },
+  { indent: 0, tokens: [] },
+  { indent: 2, tokens: [{ text: 'tests', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 4, tokens: [{ text: '- ', type: 'dash' }, { text: 'name', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"power_test"', type: 'str' }] },
+  { indent: 6, tokens: [{ text: 'settings', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 8, tokens: [{ text: 'voltage', type: 'key' }, { text: ': ', type: 'colon' }, { text: '1.2', type: 'num' }] },
+  { indent: 8, tokens: [{ text: 'temperature', type: 'key' }, { text: ': ', type: 'colon' }, { text: '85', type: 'num' }] },
+  { indent: 6, tokens: [{ text: 'expected_result', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"pass"', type: 'str' }] },
+  { indent: 0, tokens: [] },
+  { indent: 4, tokens: [{ text: '- ', type: 'dash' }, { text: 'name', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"speed_test"', type: 'str' }] },
+  { indent: 6, tokens: [{ text: 'settings', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 8, tokens: [{ text: 'frequency', type: 'key' }, { text: ': ', type: 'colon' }, { text: '100', type: 'num' }] },
+  { indent: 6, tokens: [{ text: 'expected_result', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"pass"', type: 'str' }] },
+];
+
+const faqItems = [
+  { question: 'How many spaces should I use for indentation?', answer: 'Most people use 2 spaces, but you can use 4 if you prefer. Just be consistent!' },
+  { question: 'Can I mix different types of information?', answer: 'Yes! You can have numbers, text, true/false values, and lists all in the same file. You can even have lists of objects with nested groups inside them.' },
+  { question: 'What if I make a mistake?', answer: 'Don\'t worry! YAML will usually tell you if there is an error, and it is easy to fix. We will learn about fixing mistakes in a later lesson.' },
+  { question: 'Can a list item have its own nested groups?', answer: 'Yes! Each list item (started by a dash) can contain key-value pairs, and those can include nested groups that go even deeper. There is no limit to how deep you can nest.' },
+];
+</script>
+
+# Making Lists
+
+Great job! You have learned how to organize information into groups with indentation. Now we will learn how to list many similar items — like a bullet-point list in a document.
+
+---
+
+## Simple lists
+
+Sometimes you need to list multiple things. In YAML, you use a dash (`-`) to make lists.
+
+Click Next to see each item being added to the list:
+
+<ListBuilder />
+
+This is like making a bullet-point list in a document. Each dash is one bullet point.
+
+---
+
+## Lists inside nested groups
+
+A list can live inside a nested group. The dashes are indented under their parent, just like any other child:
+
+<YamlViewer lines={listInGroup} />
+
+Here `test_list` is a child of `chip_tests` (2 dots of indent). The list items are children of `test_list` (4 dots). The `project_name` key and the `test_list` are siblings — both at 2 dots.
+
+---
+
+## Lists where each item has its own details
+
+Sometimes each item in your list is not just one value — each item has its own details. For example, your chip needs to run different tests, and each test has a name, how long it takes, and whether it is important.
+
+This is like having a to-do list where each item has its own details. Click Next to see how each dash starts a new item:
+
+<ObjectListBuilder />
+
+The key rule: **a new dash at the same indent level = a new item. No dash = still the same item.**
+
+Here is the book's complete example with all four tests. Count the dots — the list items are at 4 spaces, their fields at 6 spaces:
+
+<YamlViewer lines={objectsWithNesting} />
+
+This is like having a to-do list where each item has its own details.
+
+---
+
+## The deep pattern: nested groups inside list items
+
+Here is the most powerful combination. Each list item can have its own **nested group** inside it. For example, each test has a `settings` group with voltage and temperature:
+
+<YamlViewer lines={deepNesting} />
+
+Count the indentation levels:
+- **0 dots**: `project` (root)
+- **2 dots**: `name`, `tests` (children of project)
+- **4 dots**: `- name:` (list items inside tests)
+- **6 dots**: `settings`, `expected_result` (fields of each test item)
+- **8 dots**: `voltage`, `temperature` (inside the settings group)
+
+That is four levels deep: project → tests → item → settings → voltage. It looks complex, but every level follows the same rule: **indent 2 more spaces = go one level deeper.**
+
+---
+
+## Common beginner questions
+
+<FaqAccordion items={faqItems} />
+
+---
+
+## Key takeaways
+
+- ✓ Lists use **dashes**: `- item` — always put a space after the dash
+- ✓ Each dash at the same indent = **one item** in the list
+- ✓ **Lists with details**: new dash = new item, no dash = same item
+- ✓ Lists can live **inside nested groups** — indent the dashes
+- ✓ Each list item can have its own **nested groups inside it**
+- ✓ You can combine nesting and lists as deep as you need
+
+---
+
+<div class="not-prose" style="margin-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+  <a href="/lesson-03" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-size:0.82rem;text-decoration:none;border:1px solid var(--color-border);color:var(--color-text-muted);font-family:var(--font-ui);transition:all 0.25s ease;">
+    ← Previous
+  </a>
+  <a href="/lesson-05" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-weight:600;font-size:0.85rem;text-decoration:none;background:var(--color-accent);color:white;font-family:var(--font-ui);transition:all 0.25s ease;">
+    Next: Long Text & Multi-line →
+  </a>
+</div>

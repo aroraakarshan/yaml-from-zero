@@ -1,0 +1,202 @@
+<script>
+import KeyValueBuilder from '$lib/components/KeyValueBuilder.svelte';
+import DataTypeShowcase from '$lib/components/DataTypeShowcase.svelte';
+import FirstYamlBuilder from '$lib/components/FirstYamlBuilder.svelte';
+import MistakeSpotter from '$lib/components/MistakeSpotter.svelte';
+import YamlViewer from '$lib/components/YamlViewer.svelte';
+
+const kvExample = [
+  { indent: 0, tokens: [{ text: 'name', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"My Semiconductor Design"', type: 'str' }] },
+  { indent: 0, tokens: [{ text: 'speed', type: 'key' }, { text: ': ', type: 'colon' }, { text: '100', type: 'num' }] },
+  { indent: 0, tokens: [{ text: 'designer', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"John Smith"', type: 'str' }] },
+];
+
+const commentExample = [
+  { indent: 0, tokens: [{ text: '# This is my first YAML file', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'project_name', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"Simple Semiconductor Design"', type: 'str' }] },
+  { indent: 0, tokens: [{ text: 'speed', type: 'key' }, { text: ': ', type: 'colon' }, { text: '50', type: 'num' }, { text: '  # Speed in MHz', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'power', type: 'key' }, { text: ': ', type: 'colon' }, { text: '2', type: 'num' }, { text: '   # Power in watts', type: 'comment' }] },
+];
+
+const strExample = [
+  { indent: 0, tokens: [{ text: 'chip_name', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"My Awesome Processor"', type: 'str' }] },
+  { indent: 0, tokens: [{ text: 'designer_name', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"Alice Johnson"', type: 'str' }] },
+];
+
+const numExample = [
+  { indent: 0, tokens: [{ text: 'frequency', type: 'key' }, { text: ': ', type: 'colon' }, { text: '100', type: 'num' }, { text: '      # A whole number', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'voltage', type: 'key' }, { text: ': ', type: 'colon' }, { text: '1.2', type: 'num' }, { text: '        # A decimal number', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'temperature', type: 'key' }, { text: ': ', type: 'colon' }, { text: '-25', type: 'num' }, { text: '    # A negative number', type: 'comment' }] },
+];
+
+const boolExample = [
+  { indent: 0, tokens: [{ text: 'debug_mode', type: 'key' }, { text: ': ', type: 'colon' }, { text: 'true', type: 'bool' }, { text: '       # Yes, turn on debug mode', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'testing_done', type: 'key' }, { text: ': ', type: 'colon' }, { text: 'false', type: 'bool' }, { text: '    # No, testing is not done', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'power_saving', type: 'key' }, { text: ': ', type: 'colon' }, { text: 'yes', type: 'bool' }, { text: '      # Another way to say "true"', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'error_checking', type: 'key' }, { text: ': ', type: 'colon' }, { text: 'no', type: 'bool' }, { text: '     # Another way to say "false"', type: 'comment' }] },
+];
+
+const fullExample = [
+  { indent: 0, tokens: [{ text: '# My First Semiconductor Design Configuration File', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: '# Created by: [Your Name]', type: 'comment' }] },
+  { indent: 0, tokens: [] },
+  { indent: 0, tokens: [{ text: '# Basic project information', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'project_name', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"Learning Processor"', type: 'str' }] },
+  { indent: 0, tokens: [{ text: 'version', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"1.0"', type: 'str' }] },
+  { indent: 0, tokens: [{ text: 'date_created', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"2024-01-15"', type: 'str' }] },
+  { indent: 0, tokens: [] },
+  { indent: 0, tokens: [{ text: '# Technical specifications', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'specifications', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 2, tokens: [{ text: 'frequency_mhz', type: 'key' }, { text: ': ', type: 'colon' }, { text: '100', type: 'num' }] },
+  { indent: 2, tokens: [{ text: 'voltage_volts', type: 'key' }, { text: ': ', type: 'colon' }, { text: '1.2', type: 'num' }] },
+  { indent: 2, tokens: [{ text: 'temperature_celsius', type: 'key' }, { text: ': ', type: 'colon' }, { text: '25', type: 'num' }] },
+  { indent: 2, tokens: [{ text: 'low_power_mode', type: 'key' }, { text: ': ', type: 'colon' }, { text: 'true', type: 'bool' }] },
+  { indent: 0, tokens: [] },
+  { indent: 0, tokens: [{ text: '# List of features to include', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'features', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 2, tokens: [{ text: '- ', type: 'dash' }, { text: '"basic_arithmetic"', type: 'str' }] },
+  { indent: 2, tokens: [{ text: '- ', type: 'dash' }, { text: '"memory_access"', type: 'str' }] },
+  { indent: 2, tokens: [{ text: '- ', type: 'dash' }, { text: '"interrupt_handling"', type: 'str' }] },
+  { indent: 0, tokens: [] },
+  { indent: 0, tokens: [{ text: '# Team information', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'team', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 2, tokens: [{ text: 'lead_designer', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"Your Name"', type: 'str' }] },
+  { indent: 2, tokens: [{ text: 'reviewer', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"Senior Engineer"', type: 'str' }] },
+  { indent: 2, tokens: [{ text: 'project_manager', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"Team Lead"', type: 'str' }] },
+];
+
+const indentExample = [
+  { indent: 0, tokens: [{ text: 'chip_design', type: 'key' }, { text: ':', type: 'colon' }, { text: '           # Top level (no spaces)', type: 'comment' }] },
+  { indent: 2, tokens: [{ text: 'name', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"My Chip"', type: 'str' }, { text: '      # 2 spaces', type: 'comment' }] },
+  { indent: 2, tokens: [{ text: 'speed', type: 'key' }, { text: ': ', type: 'colon' }, { text: '100', type: 'num' }, { text: '           # 2 spaces', type: 'comment' }] },
+  { indent: 2, tokens: [{ text: 'details', type: 'key' }, { text: ':', type: 'colon' }, { text: '             # 2 spaces', type: 'comment' }] },
+  { indent: 4, tokens: [{ text: 'size', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"small"', type: 'str' }, { text: '      # 4 spaces', type: 'comment' }] },
+  { indent: 4, tokens: [{ text: 'power', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"low"', type: 'str' }, { text: '       # 4 spaces', type: 'comment' }] },
+];
+</script>
+
+# Learning YAML Step by Step
+
+## Don't Worry, YAML is Easy
+
+In this lesson, we'll learn how to write YAML files. Think of YAML like writing a very organized shopping list or recipe. There are just a few simple rules to follow.
+
+---
+
+## The Most Important Rule: Spaces Matter
+
+The most important thing to remember about YAML is that **spaces matter**. Just like when you write an outline for an essay, you use indentation to show which items belong together.
+
+**Important**: Always use the space bar, never use the Tab key!
+
+---
+
+## Rule 1: Writing Simple Information (Key-Value Pairs)
+
+The simplest way to store information in YAML is like this:
+
+<YamlViewer lines={kvExample} showGuides={false} />
+
+This is like saying:
+
+- The name is "My Semiconductor Design"
+- The speed is 100
+- The designer is "John Smith"
+
+**Remember**: Always put a **space** after the colon (:)
+
+Watch how each pair is built, piece by piece — the key (label), the colon, the mandatory space, and the value:
+
+<KeyValueBuilder />
+
+---
+
+## Rule 2: Adding Comments (Notes to Yourself)
+
+You can add comments (notes) to your YAML file using the `#` symbol. Comments are ignored by computers but help humans understand the file:
+
+<YamlViewer lines={commentExample} showGuides={false} />
+
+Comments are like sticky notes — they help you remember what each setting does.
+
+---
+
+## Rule 3: Different Types of Information
+
+YAML can handle different types of information. Click the tabs below to explore each type:
+
+<DataTypeShowcase />
+
+### Text (Strings)
+
+<YamlViewer lines={strExample} showGuides={false} />
+
+### Numbers
+
+<YamlViewer lines={numExample} showGuides={false} />
+
+### True or False (Booleans)
+
+<YamlViewer lines={boolExample} showGuides={false} />
+
+---
+
+## Your First Complete YAML File
+
+Let's put it all together and create a simple semiconductor design configuration. Watch it being built line by line — click any line to read what it does:
+
+<FirstYamlBuilder />
+
+Here is the complete file with all sections. Notice the dots showing indentation — 2 dots for items inside a group:
+
+<YamlViewer lines={fullExample} />
+
+---
+
+## Understanding Indentation (The Space Rule)
+
+Look at this example carefully — count the dots at the start of each line:
+
+<YamlViewer lines={indentExample} />
+
+Think of it like this family tree:
+
+- chip_design (grandparent — 0 spaces)
+  - name (child — 2 spaces)
+  - speed (child — 2 spaces)
+  - details (child — 2 spaces)
+    - size (grandchild — 4 spaces)
+    - power (grandchild — 4 spaces)
+
+---
+
+## Common Beginner Mistakes (And How to Avoid Them)
+
+Click through each mistake — see the error highlighted in red on the left, then click "Show Fix" to see the corrected version slide in on the right:
+
+<MistakeSpotter />
+
+---
+
+## Key takeaways
+
+Congratulations! You now know the basic rules of YAML:
+
+1. **Key-value pairs**: Use `name: value` format
+2. **Comments**: Use `#` for notes
+3. **Indentation**: Use spaces (not tabs) to show relationships
+4. **Lists**: Use `-` to make bullet points
+5. **Data types**: Text, numbers, and true/false values
+
+These simple rules are all you need to start writing YAML files. In the next lesson, we'll learn how to organize more complex information using these same basic rules.
+
+---
+
+<div class="not-prose" style="margin-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+  <a href="/lesson-01" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-size:0.82rem;text-decoration:none;border:1px solid var(--color-border);color:var(--color-text-muted);font-family:var(--font-ui);transition:all 0.25s ease;">
+    ← Previous
+  </a>
+  <a href="/lesson-03" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-weight:600;font-size:0.85rem;text-decoration:none;background:var(--color-accent);color:white;font-family:var(--font-ui);transition:all 0.25s ease;">
+    Next: Organizing with Nesting →
+  </a>
+</div>

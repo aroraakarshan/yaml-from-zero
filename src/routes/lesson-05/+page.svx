@@ -1,0 +1,107 @@
+<script>
+import MultilineDemo from '$lib/components/MultilineDemo.svelte';
+import YamlViewer from '$lib/components/YamlViewer.svelte';
+
+const pipeExample = [
+  { indent: 0, tokens: [{ text: 'description', type: 'key' }, { text: ': ', type: 'colon' }, { text: '|', type: 'str' }] },
+  { indent: 2, tokens: [{ text: 'This is my first semiconductor design project.', type: 'str' }] },
+  { indent: 2, tokens: [{ text: 'I am learning how to design a simple processor.', type: 'str' }] },
+  { indent: 0, tokens: [] },
+  { indent: 2, tokens: [{ text: 'The goals of this project are:', type: 'str' }] },
+  { indent: 2, tokens: [{ text: '- Learn about semiconductor design', type: 'str' }] },
+  { indent: 2, tokens: [{ text: '- Practice using design tools', type: 'str' }] },
+  { indent: 2, tokens: [{ text: '- Create a working processor', type: 'str' }] },
+  { indent: 0, tokens: [] },
+  { indent: 2, tokens: [{ text: 'This project will take about 6 months to complete.', type: 'str' }] },
+];
+
+const foldExample = [
+  { indent: 0, tokens: [{ text: 'summary', type: 'key' }, { text: ': ', type: 'colon' }, { text: '>', type: 'str' }] },
+  { indent: 2, tokens: [{ text: 'A beginner-friendly processor design project', type: 'str' }] },
+  { indent: 2, tokens: [{ text: 'that teaches the basics of semiconductor design', type: 'str' }] },
+  { indent: 2, tokens: [{ text: 'and takes about 6 months to complete.', type: 'str' }] },
+];
+
+const indentRuleExample = [
+  { indent: 0, tokens: [{ text: 'project', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 2, tokens: [{ text: 'description', type: 'key' }, { text: ': ', type: 'colon' }, { text: '|', type: 'str' }] },
+  { indent: 4, tokens: [{ text: 'This text is indented 4 spaces.', type: 'str' }] },
+  { indent: 4, tokens: [{ text: 'It belongs to "description."', type: 'str' }] },
+  { indent: 0, tokens: [] },
+  { indent: 4, tokens: [{ text: 'The blank line above is preserved too.', type: 'str' }] },
+  { indent: 2, tokens: [{ text: 'version', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"1.0"', type: 'str' }] },
+];
+</script>
+
+# Long Text & Multi-line
+
+So far, all our values have been short — a name, a number, true or false. But sometimes you need to write a **long description** or a **multi-line note**. Maybe you want to document what a project does, or store a shell script inside your YAML.
+
+YAML has two special symbols for this: the **pipe** `|` and the **greater-than** `>`.
+
+---
+
+## The pipe symbol: `|` (keep line breaks)
+
+The pipe means "keep every line break exactly as I wrote it." Whatever you type on separate lines stays on separate lines:
+
+<YamlViewer lines={pipeExample} />
+
+Everything indented under `description: |` is the value. The line breaks, the blank line, the dashes — all kept exactly as you wrote them.
+
+Use the pipe when **line breaks matter**: shell scripts, code snippets, release notes with bullet points, anything with structure.
+
+---
+
+## The greater-than symbol: `>` (fold into one line)
+
+The greater-than means "fold all my lines into one long paragraph." Your line breaks become spaces:
+
+<YamlViewer lines={foldExample} />
+
+YAML reads this as one single sentence: *"A beginner-friendly processor design project that teaches the basics of semiconductor design and takes about 6 months to complete."*
+
+Use greater-than when you have a **long paragraph** that you want to wrap nicely in your YAML file but should be delivered as continuous text.
+
+---
+
+## See the difference
+
+Toggle between the two symbols below. The same text on the left — but look at how differently the computer reads it on the right:
+
+<MultilineDemo />
+
+A helpful way to remember:
+- The pipe `|` looks like a **wall** that blocks lines from merging
+- The `>` points forward, **pushing** lines together into one
+
+---
+
+## The indentation rule
+
+One important detail: all the text after `|` or `>` must be **indented** at least one level deeper than the key. YAML uses the indentation to know where the text starts and ends:
+
+<YamlViewer lines={indentRuleExample} />
+
+Count the dots: `description` is at 2 spaces, its text content is at 4 spaces. When YAML sees `version:` back at the 2-space level, it knows the multi-line text is done.
+
+---
+
+## Key takeaways
+
+- ✓ `|` preserves every line break — what you type is what you get
+- ✓ `>` folds lines into a single paragraph — line breaks become spaces
+- ✓ The text must be **indented** under the key
+- ✓ Use `|` for code and structured text, `>` for long descriptions
+- ✓ Remember: pipe = wall (blocks merging), `>` = push (joins lines)
+
+---
+
+<div class="not-prose" style="margin-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+  <a href="/lesson-04" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-size:0.82rem;text-decoration:none;border:1px solid var(--color-border);color:var(--color-text-muted);font-family:var(--font-ui);transition:all 0.25s ease;">
+    ← Previous
+  </a>
+  <a href="/lesson-06" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-weight:600;font-size:0.85rem;text-decoration:none;background:var(--color-accent);color:white;font-family:var(--font-ui);transition:all 0.25s ease;">
+    Next: Putting It All Together →
+  </a>
+</div>

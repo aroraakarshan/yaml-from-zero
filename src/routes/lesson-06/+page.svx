@@ -1,0 +1,131 @@
+<script>
+import ListInNestingDemo from '$lib/components/ListInNestingDemo.svelte';
+import YamlViewer from '$lib/components/YamlViewer.svelte';
+
+const fullUsb = [
+  { indent: 0, tokens: [{ text: '# USB Controller Chip Description', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'usb_controller', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 2, tokens: [{ text: '# Basic information', type: 'comment' }] },
+  { indent: 2, tokens: [{ text: 'chip_info', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 4, tokens: [{ text: 'name', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"Simple USB Controller"', type: 'str' }] },
+  { indent: 4, tokens: [{ text: 'version', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"1.0"', type: 'str' }] },
+  { indent: 4, tokens: [{ text: 'designer', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"Student Engineer"', type: 'str' }] },
+  { indent: 4, tokens: [{ text: 'date_designed', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"2024-01-15"', type: 'str' }] },
+  { indent: 0, tokens: [] },
+  { indent: 4, tokens: [{ text: '# Long description using |', type: 'comment' }] },
+  { indent: 4, tokens: [{ text: 'description', type: 'key' }, { text: ': ', type: 'colon' }, { text: '|', type: 'str' }] },
+  { indent: 6, tokens: [{ text: 'A simple USB 2.0 controller chip', type: 'str' }] },
+  { indent: 6, tokens: [{ text: 'designed for learning purposes.', type: 'str' }] },
+  { indent: 6, tokens: [{ text: 'Supports 4 ports at 480 Mbps.', type: 'str' }] },
+  { indent: 0, tokens: [] },
+  { indent: 4, tokens: [{ text: '# Short summary using >', type: 'comment' }] },
+  { indent: 4, tokens: [{ text: 'summary', type: 'key' }, { text: ': ', type: 'colon' }, { text: '>', type: 'str' }] },
+  { indent: 6, tokens: [{ text: 'A beginner-friendly USB controller', type: 'str' }] },
+  { indent: 6, tokens: [{ text: 'for learning chip design basics.', type: 'str' }] },
+  { indent: 0, tokens: [] },
+  { indent: 2, tokens: [{ text: '# What the chip can do', type: 'comment' }] },
+  { indent: 2, tokens: [{ text: 'capabilities', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 4, tokens: [{ text: 'usb_version', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"2.0"', type: 'str' }] },
+  { indent: 4, tokens: [{ text: 'max_speed', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"480"', type: 'str' }] },
+  { indent: 4, tokens: [{ text: 'number_of_ports', type: 'key' }, { text: ': ', type: 'colon' }, { text: '4', type: 'num' }] },
+  { indent: 4, tokens: [{ text: 'power_saving', type: 'key' }, { text: ': ', type: 'colon' }, { text: 'true', type: 'bool' }] },
+  { indent: 0, tokens: [] },
+  { indent: 2, tokens: [{ text: '# Technical details', type: 'comment' }] },
+  { indent: 2, tokens: [{ text: 'specifications', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 4, tokens: [{ text: 'voltage', type: 'key' }, { text: ': ', type: 'colon' }, { text: '3.3', type: 'num' }] },
+  { indent: 4, tokens: [{ text: 'frequency', type: 'key' }, { text: ': ', type: 'colon' }, { text: '48', type: 'num' }] },
+  { indent: 4, tokens: [{ text: 'package_type', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"BGA"', type: 'str' }] },
+  { indent: 4, tokens: [{ text: 'pin_count', type: 'key' }, { text: ': ', type: 'colon' }, { text: '64', type: 'num' }] },
+  { indent: 0, tokens: [] },
+  { indent: 2, tokens: [{ text: '# What tests we need to run', type: 'comment' }] },
+  { indent: 2, tokens: [{ text: 'required_tests', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 4, tokens: [{ text: '- ', type: 'dash' }, { text: '"basic_connection_test"', type: 'str' }] },
+  { indent: 4, tokens: [{ text: '- ', type: 'dash' }, { text: '"data_transfer_test"', type: 'str' }] },
+  { indent: 4, tokens: [{ text: '- ', type: 'dash' }, { text: '"power_consumption_test"', type: 'str' }] },
+  { indent: 4, tokens: [{ text: '- ', type: 'dash' }, { text: '"temperature_test"', type: 'str' }] },
+  { indent: 4, tokens: [{ text: '- ', type: 'dash' }, { text: '"compatibility_test"', type: 'str' }] },
+];
+</script>
+
+# Putting It All Together
+
+Congratulations! You now know all the building blocks of YAML:
+
+- **Key-value pairs** (Lesson 2) — `name: "value"`
+- **Comments** (Lesson 2) — `# notes for humans`
+- **Data types** (Lesson 2) — text, numbers, true/false
+- **Nesting** (Lesson 3) — indentation creates groups
+- **Lists** (Lesson 4) — dashes create bullet points
+- **Multi-line text** (Lesson 5) — `|` and `>` for long text
+
+In this lesson, we combine everything into one real file — the kind you would actually use in semiconductor design.
+
+---
+
+## The USB Controller Chip
+
+The book's complete example describes a USB controller chip. It uses **every concept** you have learned — nested groups, key-value pairs with different data types, comments, and a list. Count the dots to see the indentation:
+
+<YamlViewer lines={fullUsb} />
+
+---
+
+## Understanding the Structure
+
+Let's break down what we just created:
+
+1. **Main container** (`usb_controller`): This holds everything — 0 spaces
+2. **Information groups** (`chip_info`, `capabilities`, `specifications`, `required_tests`): 2 spaces inside the container
+3. **Individual items** (`name`, `voltage`, etc.): 4 spaces inside each group
+4. **A list** (`required_tests`): dashes at 4 spaces, listing test names
+5. **Multi-line text** (`description: |` and `summary: >`): text at 6 spaces inside chip_info
+
+We used **every concept** from Part 1:
+- Text (strings): `"Simple USB Controller"`, `"BGA"`
+- Numbers: `4`, `3.3`, `48`, `64`
+- Booleans: `true`
+- Lists: `- "basic_connection_test"`
+- Multi-line with `|`: `description` keeps line breaks
+- Multi-line with `>`: `summary` folds into one paragraph
+
+---
+
+## Explore It Interactively
+
+Click each section below to open it. Notice how the first three are **nested groups** (key-value pairs inside) and the last one is a **simple list** (dashes):
+
+<ListInNestingDemo />
+
+Think of it like organizing your backpack:
+
+- **Backpack** = `usb_controller` (the main container)
+- **Pockets** = `chip_info`, `capabilities`, `specifications`, `required_tests` (the groups)
+- **Items in pockets** = `name`, `voltage`, `"basic_connection_test"`, etc.
+
+---
+
+## What You Have Learned in Part 1
+
+You can now **read and write any YAML file**. Everything in YAML is built from just these pieces:
+
+| Concept | Symbol | Example |
+|---|---|---|
+| Key-value pair | `:` (colon + space) | `name: "My Chip"` |
+| Comment | `#` | `# This is a note` |
+| Nested group | colon with nothing after | `chip_info:` then indent |
+| Simple list | `-` (dash + space) | `- "test_one"` |
+| Multi-line (keep breaks) | `\|` | `description: \|` |
+| Multi-line (fold) | `>` | `summary: >` |
+
+In Part 2, we will learn how to **avoid mistakes** and **validate** your YAML files.
+
+---
+
+<div class="not-prose" style="margin-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+  <a href="/lesson-05" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-size:0.82rem;text-decoration:none;border:1px solid var(--color-border);color:var(--color-text-muted);font-family:var(--font-ui);transition:all 0.25s ease;">
+    ← Previous
+  </a>
+  <a href="/lesson-07" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-weight:600;font-size:0.85rem;text-decoration:none;background:var(--color-accent);color:white;font-family:var(--font-ui);transition:all 0.25s ease;">
+    Next: Common Gotchas →
+  </a>
+</div>

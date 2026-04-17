@@ -1,0 +1,170 @@
+<script>
+import FormatCompare from '$lib/components/FormatCompare.svelte';
+import LanguageHubAnimation from '$lib/components/LanguageHubAnimation.svelte';
+import SemiconConfigCards from '$lib/components/SemiconConfigCards.svelte';
+import YamlViewer from '$lib/components/YamlViewer.svelte';
+
+const firstLook = [
+  { indent: 0, tokens: [{ text: '# My semiconductor design project', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'project_name', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"My First Processor"', type: 'str' }] },
+  { indent: 0, tokens: [{ text: 'designer', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"Your Name Here"', type: 'str' }] },
+  { indent: 0, tokens: [] },
+  { indent: 0, tokens: [{ text: '# Basic settings', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'chip_info', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 2, tokens: [{ text: 'size', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"small"', type: 'str' }] },
+  { indent: 2, tokens: [{ text: 'speed', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"fast"', type: 'str' }] },
+  { indent: 2, tokens: [{ text: 'power', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"low"', type: 'str' }] },
+  { indent: 0, tokens: [] },
+  { indent: 0, tokens: [{ text: '# What to test', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'tests_to_run', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 2, tokens: [{ text: '- ', type: 'dash' }, { text: '"basic_functionality"', type: 'str' }] },
+  { indent: 2, tokens: [{ text: '- ', type: 'dash' }, { text: '"speed_test"', type: 'str' }] },
+  { indent: 2, tokens: [{ text: '- ', type: 'dash' }, { text: '"power_consumption"', type: 'str' }] },
+];
+</script>
+
+# What is YAML and Why Should You Care?
+
+## Hello, YAML Beginner
+
+Welcome to the world of YAML! Don't worry if you've never heard of YAML before — by the end of this lesson, you'll understand exactly what it is and why it's so useful, especially for people working with computer chips and semiconductor devices.
+
+---
+
+## What is YAML? (In Simple Terms)
+
+YAML stands for "YAML Ain't Markup Language" (yes, it's a bit of a joke name). Think of YAML as a way to write down information that both humans and computers can easily understand.
+
+Imagine you want to write down your favorite pizza order:
+
+- Pizza size: Large
+- Crust: Thin
+- Toppings: Pepperoni, Mushrooms
+- Extra cheese: Yes
+
+YAML lets you write this information in a very clean, organized way that looks almost like a simple list.
+
+---
+
+## Why Do We Need YAML in Semiconductor Design?
+
+When you're designing computer chips and semiconductor devices, you need to keep track of lots of information:
+
+- What tools to use
+- How fast things should run
+- What settings to use
+- Test configurations
+- Manufacturing parameters
+- Design constraints
+
+Instead of having messy, hard-to-read files, YAML helps you organize all this information neatly.
+
+---
+
+## Let's See YAML in Action
+
+Here's a simple example to show you how YAML makes things easier to read. Watch the same FPGA configuration written in Tcl, XML, INI, and finally YAML — notice how the syntax noise drops with each format:
+
+<FormatCompare />
+
+Can you see how much cleaner and easier to understand the YAML version is? It looks almost like a simple outline!
+
+---
+
+## Why YAML is Essential for Modern Semiconductor Design
+
+### Language Independence
+
+One of the biggest advantages of YAML is that it's **language independent**. This means:
+
+- You can use the same YAML configuration file with Python tools
+- The same file works with C++ applications
+- Java programs can read the same YAML file
+- Tcl scripts can use the same configuration
+- Shell scripts can process the same data
+
+This is incredibly powerful in semiconductor design where different teams use different programming languages! Watch how a single `.yaml` file serves as the hub for every team and tool:
+
+<LanguageHubAnimation />
+
+### Industry Standard
+
+YAML has become the standard for configuration in many industries, including:
+
+- **DevOps and CI/CD**: Most deployment tools use YAML
+- **Cloud Computing**: AWS, Google Cloud, Azure all use YAML
+- **Container Technology**: Docker and Kubernetes use YAML extensively
+- **Semiconductor Tools**: Modern EDA tools are adopting YAML for configurations
+
+### Human-Readable and Machine-Parseable
+
+Unlike other formats that are hard for humans to read, YAML is:
+
+- Easy for engineers to read and modify
+- Simple for computers to parse and process
+- Self-documenting (you can understand what it does just by reading it)
+
+---
+
+## Why YAML is Great for Beginners
+
+1. **Easy to Read**: It looks like a simple list or outline
+2. **Easy to Write**: No complicated symbols or brackets
+3. **Easy to Change**: You can quickly modify settings
+4. **Works Everywhere**: You can use it with many different tools and programming languages
+5. **No Programming Knowledge Required**: You don't need to be a programmer to use YAML
+
+---
+
+## What You'll Use YAML For in Semiconductor Design
+
+In semiconductor design, you might use YAML files to:
+
+- **Tool Configuration**: Store settings for your design tools (synthesis, place & route, timing analysis)
+- **Design Parameters**: Keep track of design constraints and specifications
+- **Test Configuration**: Organize test scenarios and parameters
+- **Project Information**: Document project details and team settings
+- **Build Scripts**: Define how to build and compile your designs
+- **Environment Setup**: Configure development environments consistently across teams
+
+---
+
+## Real-World YAML in Semiconductors
+
+You don't need to understand every line yet — just notice how readable each configuration is. Click the categories below to explore real semiconductor YAML configs:
+
+<SemiconConfigCards />
+
+---
+
+## Your First Look at a Real YAML File
+
+Don't worry about understanding every detail yet — just see how readable it is. Each dot (·) shows one space of indentation:
+
+<YamlViewer lines={firstLook} />
+
+Pretty easy to understand, right? Even without knowing YAML, you can probably guess what this file is about!
+
+---
+
+## Key takeaways
+
+YAML is a simple way to organize and store information that both you and computers can easily understand. It's perfect for beginners because:
+
+- It looks like simple lists and outlines
+- You don't need to learn complicated programming syntax
+- It's widely used in the semiconductor industry
+- It's language independent — works with any programming language
+- It makes your work more organized and professional
+- It's the industry standard for modern configuration files
+
+In the next lesson, we'll learn the basic rules for writing YAML files. Don't worry — there are only a few simple rules to remember!
+
+---
+
+<div class="not-prose" style="margin-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+  <span style="font-family:var(--font-ui);font-size:0.82rem;color:var(--color-text-muted);">Lesson 1 of 10</span>
+  <a href="/lesson-02" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-weight:600;font-size:0.85rem;text-decoration:none;background:var(--color-accent);color:white;font-family:var(--font-ui);transition:all 0.25s ease;">
+    Next: Writing Your First YAML →
+  </a>
+</div>

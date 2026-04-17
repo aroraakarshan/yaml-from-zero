@@ -1,0 +1,145 @@
+<script>
+import NestingAnimation from '$lib/components/NestingAnimation.svelte';
+import IndentationTree from '$lib/components/IndentationTree.svelte';
+import NestingExplorer from '$lib/components/NestingExplorer.svelte';
+import YamlViewer from '$lib/components/YamlViewer.svelte';
+import FaqAccordion from '$lib/components/FaqAccordion.svelte';
+
+const faqItems = [
+  { question: 'How many spaces should I use for indentation?', answer: 'Most people use 2 spaces, but you can use 4 if you prefer. Just be consistent — pick one and stick with it throughout your file.' },
+  { question: 'How deep can I nest?', answer: 'As deep as you want — groups inside groups inside groups. But in practice, 2 or 3 levels deep is plenty. If you go deeper, the file becomes hard to read.' },
+  { question: 'What if I make a mistake with spaces?', answer: 'Don\'t worry! YAML will tell you there is an error. The fix is almost always: make sure all items at the same level have the exact same number of spaces.' },
+];
+
+const nestingExample = [
+  { indent: 0, tokens: [{ text: '# My Simple Computer Chip', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'my_chip', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 2, tokens: [{ text: 'name', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"Learning Chip"', type: 'str' }] },
+  { indent: 2, tokens: [{ text: 'designer', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"Your Name"', type: 'str' }] },
+  { indent: 0, tokens: [] },
+  { indent: 2, tokens: [{ text: '# Processor section', type: 'comment' }] },
+  { indent: 2, tokens: [{ text: 'processor', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 4, tokens: [{ text: 'speed', type: 'key' }, { text: ': ', type: 'colon' }, { text: '100', type: 'num' }] },
+  { indent: 4, tokens: [{ text: 'cores', type: 'key' }, { text: ': ', type: 'colon' }, { text: '2', type: 'num' }] },
+  { indent: 4, tokens: [{ text: 'type', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"ARM"', type: 'str' }] },
+  { indent: 0, tokens: [] },
+  { indent: 2, tokens: [{ text: '# Memory section', type: 'comment' }] },
+  { indent: 2, tokens: [{ text: 'memory', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 4, tokens: [{ text: 'size', type: 'key' }, { text: ': ', type: 'colon' }, { text: '512', type: 'num' }] },
+  { indent: 4, tokens: [{ text: 'type', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"DDR4"', type: 'str' }] },
+  { indent: 4, tokens: [{ text: 'speed', type: 'key' }, { text: ': ', type: 'colon' }, { text: '2400', type: 'num' }] },
+];
+</script>
+
+# Organizing Information Like a Pro
+
+Great job! You have learned the basics of YAML. Now we will learn how to organize more complex information. Think of this lesson as learning how to organize a big filing cabinet instead of just a simple folder.
+
+---
+
+## Groups Within Groups (Nested Information)
+
+Sometimes you need to organize information into groups, and then have smaller groups inside those groups. In YAML, this is super easy!
+
+Imagine you have six settings for a chip. If you just write them all flat, it is hard to tell which ones go together. Watch what happens when we organize them into groups:
+
+<NestingAnimation />
+
+---
+
+## How to Create Nesting
+
+Here is the book's example — a simple computer chip with two sections (processor and memory) inside one main group. Each dot (·) represents one space of indentation:
+
+<YamlViewer lines={nestingExample} />
+
+Notice how we have groups (`processor` and `memory`) inside the main group (`my_chip`). Each group has its own information that belongs together.
+
+The dots make the indentation visible:
+- **0 dots** = top level (`my_chip:`)
+- **2 dots** = first level inside my_chip (`name`, `processor`, `memory`)
+- **4 dots** = second level inside processor or memory (`speed`, `cores`, `size`)
+
+Here is how you create this step by step:
+
+1. Write the **main group name** followed by a colon and nothing else: `my_chip:`
+2. On the next line, indent **2 spaces** and write child items: `  name: "Learning Chip"`
+3. To create a **sub-group**, write a label with nothing after the colon: `  processor:`
+4. Items inside the sub-group get **4 spaces** (2 more): `    speed: 100`
+
+The rule is always the same: **no value after the colon** means "look below me for my contents."
+
+---
+
+## How Indentation Creates Structure
+
+The number of spaces at the start of a line tells YAML who belongs to whom. Click Next to build a nested structure step by step — watch the tree on the right grow as each line is added:
+
+<IndentationTree />
+
+Think of it like this family tree:
+
+- chip_design (grandparent — 0 spaces)
+  - name (child — 2 spaces)
+  - speed (child — 2 spaces)
+  - details (child — 2 spaces)
+    - size (grandchild — 4 spaces)
+    - power (grandchild — 4 spaces)
+
+The rules are simple:
+- **Same indent** = same level (siblings sitting next to each other)
+- **More indent** = one level deeper (a child inside a parent)
+- Always use **2 spaces** per level. Never mix tabs and spaces
+- **No value after the colon** = "my contents are below me"
+
+---
+
+## A Real Example: Chip Specifications
+
+Here is a real example using only nesting — no lists yet. A chip has multiple groups of settings, and each group contains its own key-value pairs:
+
+<NestingExplorer />
+
+Let's break down the structure:
+
+1. **Main container** (`usb_controller`): This holds everything
+2. **Information groups**: `chip_info`, `capabilities`, `specifications`
+3. **Individual items**: Each group contains specific pieces of information
+4. **Different data types**: We used text, numbers, and true/false
+
+Think of it like organizing your backpack:
+
+- **Backpack** = `usb_controller` (the main container)
+- **Pockets** = `chip_info`, `capabilities`, etc. (the groups)
+- **Items in pockets** = `name`, `voltage`, etc. (the individual pieces of information)
+
+---
+
+## Common Beginner Questions
+
+<FaqAccordion items={faqItems} />
+
+---
+
+## Key takeaways
+
+You have learned how to organize complex information in YAML:
+
+- ✓ **Nested groups**: Put related information together using indentation
+- ✓ **No value after the colon** means "look below me for my contents"
+- ✓ **Same indent = siblings**, more indent = children
+- ✓ Always use **2 spaces** per level, never tabs
+- ✓ Think of it like **folders inside folders** or **drawers in a filing cabinet**
+
+In the next lesson, we will learn how to make lists — another way to organize multiple items.
+
+---
+
+<div class="not-prose" style="margin-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+  <a href="/lesson-02" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-size:0.82rem;text-decoration:none;border:1px solid var(--color-border);color:var(--color-text-muted);font-family:var(--font-ui);transition:all 0.25s ease;">
+    ← Previous
+  </a>
+  <a href="/lesson-04" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-weight:600;font-size:0.85rem;text-decoration:none;background:var(--color-accent);color:white;font-family:var(--font-ui);transition:all 0.25s ease;">
+    Next: Making Lists →
+  </a>
+</div>
