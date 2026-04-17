@@ -1,3 +1,146 @@
-# Lesson 08
+<script>
+import ValidationExercise from '$lib/components/ValidationExercise.svelte';
+import FaqAccordion from '$lib/components/FaqAccordion.svelte';
 
-Coming soon.
+const errorMessages = [
+  { question: '"mapping values are not allowed here"', answer: 'Usually means a missing space after a colon. YAML sees name:"value" and does not know where the key ends. Fix: add a space after the colon.' },
+  { question: '"found duplicate key"', answer: 'The same key name was used twice in the same section. YAML silently uses the last one and throws away the first. Fix: rename one of the keys.' },
+  { question: '"expected <block end>, but found \'<scalar>\'"', answer: 'An indentation problem. One line has more or fewer spaces than expected. Fix: check that all items at the same level have the exact same number of spaces.' },
+  { question: '"could not find expected \':\'"', answer: 'A missing colon after a key name. Every key needs a colon followed by a space. Fix: add the missing colon.' },
+];
+
+const toolFaq = [
+  { question: 'What is YAML Lint?', answer: 'A free online tool at yamllint.com. Copy your YAML, paste it in, and it tells you if there are any errors. It shows you exactly which line has the problem.' },
+  { question: 'What VS Code extension should I use?', answer: 'Install the "YAML" extension by Red Hat. It gives you real-time error highlighting (red underlines), auto-completion, and indentation guides — the three things that prevent most YAML mistakes.' },
+  { question: 'Can I validate from the command line?', answer: 'Yes! Install yamllint with "pip install yamllint" and run "yamllint my_config.yaml". Or use Python directly: python -c "import yaml; yaml.safe_load(open(\'my_config.yaml\'))"' },
+];
+</script>
+
+# Validation & Debugging
+
+When working with YAML files in semiconductor design, even small mistakes can cause big problems. A missing space or wrong indentation might prevent your design tools from running correctly. In this lesson, you will learn **tools and techniques** to catch errors early.
+
+---
+
+## Exercise: Validate a Real Semiconductor Config
+
+Let's examine a real configuration file and identify all the issues. This file from the book has **8 errors** — missing spaces, wrong indentation, duplicate keys, and inconsistent booleans. Click each line to check it:
+
+<ValidationExercise />
+
+---
+
+## Error Messages and What They Mean
+
+When YAML finds an error, it shows a message. These messages can be confusing at first, but they all point to common problems. Click each one to learn what it means:
+
+<FaqAccordion items={errorMessages} />
+
+---
+
+## How to Validate Your YAML
+
+### Method 1: Online YAML Validators
+
+The easiest way to check your YAML — no installation needed:
+
+1. **YAML Lint** (yamllint.com) — paste your YAML, see errors instantly
+2. **YAML Validator** (codebeautify.org/yaml-validator) — validates and formats
+3. **JSON Formatter YAML Validator** — shows the JSON equivalent
+
+**Steps:**
+1. Copy your YAML content
+2. Paste it into the validator
+3. Check for error messages
+4. Fix any issues reported
+
+### Method 2: Text Editor with YAML Support
+
+Use editors that highlight YAML syntax errors in real time:
+
+**Recommended Editors:**
+- **Visual Studio Code** (with YAML extension by Red Hat)
+- **Sublime Text**
+- **Vim** (with YAML plugin)
+
+**What to look for in your editor:**
+- Red underlines (syntax errors)
+- Color coding (proper highlighting — keys, values, comments in different colors)
+- Indentation guides (vertical lines showing each level)
+
+### Method 3: Command Line Tools
+
+If you have access to command line tools:
+
+```bash
+# Using yamllint (if installed)
+yamllint my_config.yaml
+
+# Using Python's yaml module
+python -c "import yaml; yaml.safe_load(open('my_config.yaml'))"
+```
+
+---
+
+## Common Questions About Validation Tools
+
+<FaqAccordion items={toolFaq} />
+
+---
+
+## YAML Validation Checklist
+
+Before using any YAML file, check these items:
+
+### Syntax Checklist
+- ✓ **Indentation**: Consistent spaces (2 or 4), no tabs
+- ✓ **Colons**: Space after every colon
+- ✓ **Lists**: Consistent dash formatting
+- ✓ **Quotes**: Used for text with spaces or special characters
+- ✓ **Booleans**: Using `true`/`false` (lowercase)
+- ✓ **No duplicate keys** in the same section
+
+### Content Checklist
+- ✓ **Required fields**: All necessary settings present
+- ✓ **Valid values**: Settings match expected formats
+- ✓ **Units specified**: Include units in key names (like `frequency_mhz`)
+- ✓ **Comments helpful**: Explain complex settings
+- ✓ **Consistent naming**: Follow `snake_case` naming
+
+---
+
+## Building Good Validation Habits
+
+### Before Saving Your YAML File
+1. **Visual inspection**: Does the structure look right?
+2. **Check indentation**: Are all levels consistent?
+3. **Validate syntax**: Use an online validator
+4. **Test with tools**: Try loading it in your design tools
+
+### When Sharing YAML Files
+1. **Include documentation**: Explain the structure
+2. **Validate first**: Don't share broken files
+3. **Use version control**: Track changes properly
+4. **Include examples**: Show how to use the configuration
+
+---
+
+## Key takeaways
+
+Proper YAML validation helps you:
+
+- ✓ **Avoid tool errors**: Prevent design tools from failing
+- ✓ **Save debugging time**: Catch mistakes early
+- ✓ **Share confidently**: Know your files work correctly
+- ✓ **Maintain quality**: Keep professional standards
+
+---
+
+<div class="not-prose" style="margin-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+  <a href="/lesson-07" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-size:0.82rem;text-decoration:none;border:1px solid var(--color-border);color:var(--color-text-muted);font-family:var(--font-ui);transition:all 0.25s ease;">
+    ← Previous
+  </a>
+  <a href="/lesson-09" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-weight:600;font-size:0.85rem;text-decoration:none;background:var(--color-accent);color:white;font-family:var(--font-ui);transition:all 0.25s ease;">
+    Next: Anchors & Aliases →
+  </a>
+</div>

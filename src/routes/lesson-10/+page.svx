@@ -1,3 +1,145 @@
-# Lesson 10
+<script>
+import YamlViewer from '$lib/components/YamlViewer.svelte';
 
-Coming soon.
+const goodNames = [
+  { indent: 0, tokens: [{ text: '# Easy to understand names', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'processor_speed_mhz', type: 'key' }, { text: ': ', type: 'colon' }, { text: '100', type: 'num' }] },
+  { indent: 0, tokens: [{ text: 'memory_size_mb', type: 'key' }, { text: ': ', type: 'colon' }, { text: '512', type: 'num' }] },
+  { indent: 0, tokens: [{ text: 'power_consumption_watts', type: 'key' }, { text: ': ', type: 'colon' }, { text: '2.5', type: 'num' }] },
+  { indent: 0, tokens: [{ text: 'designer_name', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"Alice Johnson"', type: 'str' }] },
+  { indent: 0, tokens: [{ text: 'project_start_date', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"2024-01-15"', type: 'str' }] },
+];
+
+const badNames = [
+  { indent: 0, tokens: [{ text: '# Hard to understand names', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'ps', type: 'key' }, { text: ': ', type: 'colon' }, { text: '100', type: 'num' }, { text: '         # What is "ps"?', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'ms', type: 'key' }, { text: ': ', type: 'colon' }, { text: '512', type: 'num' }, { text: '         # Memory size? Milliseconds?', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'pc', type: 'key' }, { text: ': ', type: 'colon' }, { text: '2.5', type: 'num' }, { text: '         # Power consumption? Personal computer?', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'dn', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"Alice"', type: 'str' }, { text: '     # Designer name? Directory name?', type: 'comment' }] },
+];
+
+const docExample = [
+  { indent: 0, tokens: [{ text: '# =================================================================', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: '# Semiconductor Design Configuration File', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: '# Project: Next-Gen Processor Core', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: '# Author: Design Team', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: '# Last Updated: 2024-01-15', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: '# =================================================================', type: 'comment' }] },
+  { indent: 0, tokens: [] },
+  { indent: 0, tokens: [{ text: '# Technology specifications', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'technology_node', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 2, tokens: [{ text: 'process', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"5nm FinFET"', type: 'str' }, { text: '      # Manufacturing process', type: 'comment' }] },
+  { indent: 2, tokens: [{ text: 'foundry', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"TSMC"', type: 'str' }, { text: '            # Semiconductor foundry', type: 'comment' }] },
+  { indent: 2, tokens: [{ text: 'metal_layers', type: 'key' }, { text: ': ', type: 'colon' }, { text: '15', type: 'num' }, { text: '           # Number of metal layers', type: 'comment' }] },
+  { indent: 0, tokens: [] },
+  { indent: 0, tokens: [{ text: '# Design constraints and requirements', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'constraints', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 2, tokens: [{ text: 'performance', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 4, tokens: [{ text: 'max_frequency_ghz', type: 'key' }, { text: ': ', type: 'colon' }, { text: '3.2', type: 'num' }, { text: '   # Maximum operating frequency', type: 'comment' }] },
+  { indent: 4, tokens: [{ text: 'ipc_target', type: 'key' }, { text: ': ', type: 'colon' }, { text: '4.5', type: 'num' }, { text: '          # Instructions per cycle target', type: 'comment' }] },
+  { indent: 2, tokens: [{ text: 'power', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 4, tokens: [{ text: 'max_tdp_watts', type: 'key' }, { text: ': ', type: 'colon' }, { text: '95', type: 'num' }, { text: '        # Thermal design power', type: 'comment' }] },
+  { indent: 4, tokens: [{ text: 'idle_power_watts', type: 'key' }, { text: ': ', type: 'colon' }, { text: '5', type: 'num' }, { text: '      # Power in idle state', type: 'comment' }] },
+];
+</script>
+
+# Style & Best Practices
+
+Just like keeping your desk organized helps you work better, following good practices with YAML will make your files easier to read, share, and maintain. Let's learn some simple habits that will make you look like a pro!
+
+---
+
+## Rule 1: Use Clear and Descriptive Names
+
+Choose names that clearly explain what something is or does.
+
+### Good examples:
+
+<YamlViewer lines={goodNames} showGuides={false} />
+
+### Poor examples (don't do this):
+
+<YamlViewer lines={badNames} showGuides={false} />
+
+The good names include the **unit** in the name (`_mhz`, `_mb`, `_watts`). This makes the file self-documenting — anyone can understand it without a separate manual.
+
+---
+
+## Rule 2: Use Consistent Naming Conventions
+
+Pick a naming style and stick with it throughout your project:
+
+**snake_case** (recommended for YAML):
+
+```yaml
+processor_config:
+  clock_frequency_mhz: 400
+  power_consumption_mw: 150
+  cache_size_kb: 64
+```
+
+**Pick one style and use it everywhere!** Mixing `processorConfig` with `power_consumption` in the same file is confusing.
+
+---
+
+## Rule 3: Document Your Files
+
+Add a header block at the top of every configuration file, and use comments to explain each section:
+
+<YamlViewer lines={docExample} />
+
+Good documentation includes:
+- A **header block** with project name, author, and last updated date
+- **Section comments** explaining what each group is for
+- **Inline comments** explaining individual values and their units
+
+---
+
+## Rule 4: Organize Information Logically
+
+Group related settings together and separate groups with blank lines:
+
+```yaml
+# Project Information
+project:
+  name: "5G Baseband Processor"
+  version: "2.1"
+  team: "RF Design Team"
+
+# Hardware Specifications  
+hardware:
+  processor:
+    architecture: "ARM"
+    cores: 8
+    frequency_ghz: 2.4
+
+# Power and Thermal
+constraints:
+  max_power_w: 25
+  supply_voltage_v: 0.8
+```
+
+---
+
+## Key takeaways
+
+Following best practices ensures maintainable and robust YAML configurations:
+
+- ✓ **Use descriptive names** with units (`frequency_mhz`, not `f`)
+- ✓ **Use consistent naming** — `snake_case` throughout
+- ✓ **Document your files** — header block + section comments + inline comments
+- ✓ **Organize logically** — group related settings, separate with blank lines
+- ✓ **Include units** in key names so values are self-documenting
+
+Congratulations — you have completed the YAML from Zero tutorial! You now know everything you need to read, write, and maintain professional YAML configuration files for semiconductor design.
+
+---
+
+<div class="not-prose" style="margin-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+  <a href="/lesson-09" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-size:0.82rem;text-decoration:none;border:1px solid var(--color-border);color:var(--color-text-muted);font-family:var(--font-ui);transition:all 0.25s ease;">
+    ← Previous
+  </a>
+  <a href="/" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-weight:600;font-size:0.85rem;text-decoration:none;background:var(--color-accent);color:white;font-family:var(--font-ui);transition:all 0.25s ease;">
+    ← Back to Home
+  </a>
+</div>

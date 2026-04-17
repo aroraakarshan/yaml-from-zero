@@ -65,6 +65,29 @@
 			fixedYaml: '  model: "Different Name"',
 			hint: 'Can two items in the same group have the exact same label?'
 		},
+		{
+			title: 'Mixing list styles',
+			yaml: [
+				{ text: 'features:', isError: false, explanation: 'The parent key for a list.' },
+				{ text: '  - "USB Controller"', isError: false, explanation: 'Dash style list item — fine.' },
+				{ text: '  - "Ethernet"', isError: false, explanation: 'Same style — fine.' },
+				{ text: '  - [WiFi, Bluetooth]', isError: true, explanation: '🐛 Bug found! This uses square bracket style [WiFi, Bluetooth] while the other items use dash style. Never mix list styles in the same list. Write each item on its own line with a dash.' },
+				{ text: '  - GPS', isError: false, explanation: 'Back to dash style, but GPS should be quoted since it is text.' },
+			],
+			fixedYaml: '  - "WiFi"\n  - "Bluetooth"',
+			hint: 'Are all the list items formatted the same way?'
+		},
+		{
+			title: 'Incorrect quoting',
+			yaml: [
+				{ text: 'design_info:', isError: false, explanation: 'The parent key.' },
+				{ text: '  name: My Design', isError: true, explanation: '🐛 Bug found! "My Design" contains a space. Without quotes, YAML might misinterpret it. Always quote text that contains spaces: "My Design".' },
+				{ text: '  version: 1.0', isError: false, explanation: 'Numbers do not need quotes — this is fine.' },
+				{ text: '  date: 2024-01-01', isError: false, explanation: 'This looks fine, but YAML will parse it as a date object, not text. If you want it as text, use quotes: "2024-01-01".' },
+			],
+			fixedYaml: '  name: "My Design"',
+			hint: 'Does any text value contain spaces or special characters that need protection?'
+		},
 	];
 
 	let challenge = $derived(challenges[currentChallenge]);

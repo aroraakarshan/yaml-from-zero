@@ -1,3 +1,140 @@
-# Lesson 07
+<script>
+import ErrorSpotter from '$lib/components/ErrorSpotter.svelte';
+import YamlViewer from '$lib/components/YamlViewer.svelte';
+import FaqAccordion from '$lib/components/FaqAccordion.svelte';
 
-Coming soon.
+const wrongFile = [
+  { indent: 0, tokens: [{ text: '# Semiconductor Design Configuration', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'project_info', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 2, tokens: [{ text: 'name', type: 'key' }, { text: ': ', type: 'colon' }, { text: '5G Modem Design', type: 'str' }] },
+  { indent: 4, tokens: [{ text: 'team_lead', type: 'key' }, { text: ':', type: 'colon' }, { text: '"Sarah Chen"', type: 'str' }, { text: '  # Missing space!', type: 'comment' }] },
+  { indent: 2, tokens: [{ text: 'version', type: 'key' }, { text: ': ', type: 'colon' }, { text: '2.0', type: 'num' }] },
+  { indent: 2, tokens: [{ text: 'version', type: 'key' }, { text: ': ', type: 'colon' }, { text: '3.0', type: 'num' }, { text: '  # Duplicate key!', type: 'comment' }] },
+  { indent: 0, tokens: [] },
+  { indent: 0, tokens: [{ text: 'testing', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 2, tokens: [{ text: 'functional_test', type: 'key' }, { text: ': ', type: 'colon' }, { text: 'TRUE', type: 'bool' }, { text: '  # Wrong format!', type: 'comment' }] },
+  { indent: 2, tokens: [{ text: 'performance_test', type: 'key' }, { text: ': ', type: 'colon' }, { text: 'yes', type: 'bool' }] },
+  { indent: 2, tokens: [{ text: 'power_test', type: 'key' }, { text: ': ', type: 'colon' }, { text: 'True', type: 'bool' }, { text: '  # Inconsistent!', type: 'comment' }] },
+];
+
+const fixedFile = [
+  { indent: 0, tokens: [{ text: '# Semiconductor Design Configuration', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'project_info', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 2, tokens: [{ text: 'name', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"5G Modem Design"', type: 'str' }] },
+  { indent: 2, tokens: [{ text: 'team_lead', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"Sarah Chen"', type: 'str' }] },
+  { indent: 2, tokens: [{ text: 'version', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"3.0"', type: 'str' }] },
+  { indent: 0, tokens: [] },
+  { indent: 0, tokens: [{ text: 'testing', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 2, tokens: [{ text: 'functional_test', type: 'key' }, { text: ': ', type: 'colon' }, { text: 'true', type: 'bool' }] },
+  { indent: 2, tokens: [{ text: 'performance_test', type: 'key' }, { text: ': ', type: 'colon' }, { text: 'true', type: 'bool' }] },
+  { indent: 2, tokens: [{ text: 'power_test', type: 'key' }, { text: ': ', type: 'colon' }, { text: 'true', type: 'bool' }] },
+];
+
+const errorMessages = [
+  { question: '"mapping values are not allowed here"', answer: 'Usually means a missing space after a colon, or incorrect indentation. Check the line YAML is pointing to and the line above it.' },
+  { question: '"found duplicate key"', answer: 'The same key name was used twice in the same section. Rename one of the keys to something unique.' },
+  { question: '"expected <block end>, but found \'<scalar>\'"', answer: 'An indentation problem. Check that all items at the same level have the exact same number of spaces.' },
+  { question: '"could not find expected \':\'"', answer: 'A missing colon after a key name, or a formatting issue. Make sure every key has a colon followed by a space.' },
+];
+</script>
+
+# Common Gotchas
+
+When working with YAML files in semiconductor design, even small mistakes can cause big problems. A missing space or wrong indentation might prevent your design tools from running correctly. Learning to identify and fix common YAML mistakes will save you time and frustration.
+
+---
+
+## Test Yourself First
+
+Before reading the explanations, try to find the bugs! Each challenge has one error — click the line you think is wrong:
+
+<ErrorSpotter />
+
+---
+
+## Example: Finding Multiple Errors
+
+Let's examine a real semiconductor configuration file that has several problems. Can you spot them all?
+
+### The broken file:
+
+<YamlViewer lines={wrongFile} showGuides={false} />
+
+This file has **four errors**:
+1. `name: 5G Modem Design` — needs quotes (contains a space)
+2. `team_lead:"Sarah Chen"` — missing space after colon, and wrong indentation (4 spaces instead of 2)
+3. `version` appears twice — duplicate key!
+4. `TRUE`, `yes`, `True` — inconsistent boolean formats
+
+### The corrected file:
+
+<YamlViewer lines={fixedFile} />
+
+Every error is fixed: quotes added, space after colon, duplicate removed, booleans all use lowercase `true`.
+
+---
+
+## Error Messages and What They Mean
+
+When YAML finds an error, it shows a message. These messages can be confusing at first, but they all point to common problems. Click each one to learn what it means:
+
+<FaqAccordion items={errorMessages} />
+
+---
+
+## YAML Validation Checklist
+
+Before using any YAML file, check these items:
+
+### Syntax Checklist
+- ✓ **Indentation**: Consistent spaces (2 or 4), no tabs
+- ✓ **Colons**: Space after every colon
+- ✓ **Lists**: Consistent dash formatting
+- ✓ **Quotes**: Used for text with spaces or special characters
+- ✓ **Booleans**: Using `true`/`false` (lowercase)
+- ✓ **No duplicate keys** in the same section
+
+### Content Checklist
+- ✓ **Required fields**: All necessary settings present
+- ✓ **Valid values**: Settings match expected formats
+- ✓ **Units specified**: Include units in key names (like `frequency_mhz`)
+- ✓ **Comments helpful**: Explain complex settings
+- ✓ **Consistent naming**: Follow `snake_case` naming
+
+---
+
+## Building Good Validation Habits
+
+### Before Saving Your YAML File
+1. **Visual inspection**: Does the structure look right?
+2. **Check indentation**: Are all levels consistent?
+3. **Validate syntax**: Use an online validator
+4. **Test with tools**: Try loading it in your design tools
+
+### When Sharing YAML Files
+1. **Include documentation**: Explain the structure
+2. **Validate first**: Don't share broken files
+3. **Use version control**: Track changes properly
+4. **Include examples**: Show how to use the configuration
+
+---
+
+## Key takeaways
+
+Proper YAML validation helps you:
+
+- ✓ **Avoid tool errors**: Prevent design tools from failing
+- ✓ **Save debugging time**: Catch mistakes early
+- ✓ **Share confidently**: Know your files work correctly
+- ✓ **Maintain quality**: Keep professional standards
+
+---
+
+<div class="not-prose" style="margin-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+  <a href="/lesson-06" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-size:0.82rem;text-decoration:none;border:1px solid var(--color-border);color:var(--color-text-muted);font-family:var(--font-ui);transition:all 0.25s ease;">
+    ← Previous
+  </a>
+  <a href="/lesson-08" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-weight:600;font-size:0.85rem;text-decoration:none;background:var(--color-accent);color:white;font-family:var(--font-ui);transition:all 0.25s ease;">
+    Next: Validation & Debugging →
+  </a>
+</div>

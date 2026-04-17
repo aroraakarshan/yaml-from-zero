@@ -1,3 +1,112 @@
-# Lesson 09
+<script>
+import YamlViewer from '$lib/components/YamlViewer.svelte';
 
-Coming soon.
+const anchorStep1 = [
+  { indent: 0, tokens: [{ text: '# Create a template using & (ampersand)', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'base_config', type: 'key' }, { text: ': ', type: 'colon' }, { text: '&base_settings', type: 'dash' }] },
+  { indent: 2, tokens: [{ text: 'technology', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"28nm"', type: 'str' }] },
+  { indent: 2, tokens: [{ text: 'voltage', type: 'key' }, { text: ': ', type: 'colon' }, { text: '1.2', type: 'num' }] },
+  { indent: 2, tokens: [{ text: 'temperature', type: 'key' }, { text: ': ', type: 'colon' }, { text: '25', type: 'num' }] },
+];
+
+const anchorStep2 = [
+  { indent: 0, tokens: [{ text: '# Use the template with << and *', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'development', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 2, tokens: [{ text: '<<', type: 'key' }, { text: ': ', type: 'colon' }, { text: '*base_settings', type: 'dash' }, { text: '      # Copies all base settings here', type: 'comment' }] },
+  { indent: 2, tokens: [{ text: 'debug_mode', type: 'key' }, { text: ': ', type: 'colon' }, { text: 'true', type: 'bool' }, { text: '        # Add extra settings', type: 'comment' }] },
+];
+
+const fullEnvironments = [
+  { indent: 0, tokens: [{ text: '# Base configuration', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'base_config', type: 'key' }, { text: ': ', type: 'colon' }, { text: '&base_settings', type: 'dash' }] },
+  { indent: 2, tokens: [{ text: 'technology', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"28nm"', type: 'str' }] },
+  { indent: 2, tokens: [{ text: 'voltage', type: 'key' }, { text: ': ', type: 'colon' }, { text: '1.2', type: 'num' }] },
+  { indent: 2, tokens: [{ text: 'temperature', type: 'key' }, { text: ': ', type: 'colon' }, { text: '25', type: 'num' }] },
+  { indent: 0, tokens: [] },
+  { indent: 0, tokens: [{ text: '# Development environment', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'development', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 2, tokens: [{ text: '<<', type: 'key' }, { text: ': ', type: 'colon' }, { text: '*base_settings', type: 'dash' }] },
+  { indent: 2, tokens: [{ text: 'debug_mode', type: 'key' }, { text: ': ', type: 'colon' }, { text: 'true', type: 'bool' }] },
+  { indent: 2, tokens: [{ text: 'coverage_enabled', type: 'key' }, { text: ': ', type: 'colon' }, { text: 'true', type: 'bool' }] },
+  { indent: 2, tokens: [{ text: 'simulation_time', type: 'key' }, { text: ': ', type: 'colon' }, { text: '1000', type: 'num' }, { text: '   # microseconds', type: 'comment' }] },
+  { indent: 2, tokens: [{ text: 'waveform_dump', type: 'key' }, { text: ': ', type: 'colon' }, { text: 'true', type: 'bool' }] },
+  { indent: 0, tokens: [] },
+  { indent: 0, tokens: [{ text: '# Production environment', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'production', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 2, tokens: [{ text: '<<', type: 'key' }, { text: ': ', type: 'colon' }, { text: '*base_settings', type: 'dash' }] },
+  { indent: 2, tokens: [{ text: 'debug_mode', type: 'key' }, { text: ': ', type: 'colon' }, { text: 'false', type: 'bool' }] },
+  { indent: 2, tokens: [{ text: 'simulation_time', type: 'key' }, { text: ': ', type: 'colon' }, { text: '10000', type: 'num' }, { text: '  # microseconds', type: 'comment' }] },
+  { indent: 2, tokens: [{ text: 'optimization_level', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"high"', type: 'str' }] },
+  { indent: 0, tokens: [] },
+  { indent: 0, tokens: [{ text: '# Testing environment', type: 'comment' }] },
+  { indent: 0, tokens: [{ text: 'testing', type: 'key' }, { text: ':', type: 'colon' }] },
+  { indent: 2, tokens: [{ text: '<<', type: 'key' }, { text: ': ', type: 'colon' }, { text: '*base_settings', type: 'dash' }] },
+  { indent: 2, tokens: [{ text: 'debug_mode', type: 'key' }, { text: ': ', type: 'colon' }, { text: 'true', type: 'bool' }] },
+  { indent: 2, tokens: [{ text: 'stress_testing', type: 'key' }, { text: ': ', type: 'colon' }, { text: 'true', type: 'bool' }] },
+  { indent: 2, tokens: [{ text: 'corner_analysis', type: 'key' }, { text: ': ', type: 'colon' }, { text: 'true', type: 'bool' }] },
+];
+</script>
+
+# Anchors & Aliases
+
+Sometimes you have the same settings that need to be used in multiple places. Instead of copying and pasting the same information over and over, YAML has a special feature called "anchors" and "references" that lets you reuse information.
+
+Think of it like creating a **template** that you can copy to different places.
+
+---
+
+## Step 1: Create an Anchor (Template)
+
+You create a template using the `&` (ampersand) symbol. This "anchors" a set of values so you can reference them later:
+
+<YamlViewer lines={anchorStep1} />
+
+The `&base_settings` after the colon creates a template called "base_settings." The three values below it (technology, voltage, temperature) are now saved as a reusable template.
+
+---
+
+## Step 2: Use the Template with References
+
+You use the template with `<<:` and `*` (asterisk). This copies all the values from the template into a new section:
+
+<YamlViewer lines={anchorStep2} />
+
+What this means:
+- `&base_settings` **creates** a template called "base_settings"
+- `<<: *base_settings` **copies** all the items from that template
+- You can then **add more items** specific to each section
+
+---
+
+## Using YAML for Different Environments
+
+In semiconductor design, you often need different settings for development, production, and testing. All three environments share the same base settings (technology, voltage, temperature), but each adds its own extras.
+
+Instead of writing the same three lines three times, you write them once and reference them:
+
+<YamlViewer lines={fullEnvironments} />
+
+All three environments automatically get `technology: "28nm"`, `voltage: 1.2`, and `temperature: 25` from the base template. Each one then adds its own specific settings.
+
+If you ever need to change the technology from "28nm" to "7nm", you change it in **one place** (the base template) and all three environments update automatically.
+
+---
+
+## Key takeaways
+
+- ✓ `&name` creates an anchor (template) you can reuse
+- ✓ `<<: *name` copies all values from the anchor into a new section
+- ✓ You can add extra settings on top of the template
+- ✓ Change the template once → all references update automatically
+- ✓ This prevents copy-paste errors and keeps your files DRY (Don't Repeat Yourself)
+
+---
+
+<div class="not-prose" style="margin-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+  <a href="/lesson-08" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-size:0.82rem;text-decoration:none;border:1px solid var(--color-border);color:var(--color-text-muted);font-family:var(--font-ui);transition:all 0.25s ease;">
+    ← Previous
+  </a>
+  <a href="/lesson-10" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;border-radius:8px;font-weight:600;font-size:0.85rem;text-decoration:none;background:var(--color-accent);color:white;font-family:var(--font-ui);transition:all 0.25s ease;">
+    Next: Style & Best Practices →
+  </a>
+</div>
