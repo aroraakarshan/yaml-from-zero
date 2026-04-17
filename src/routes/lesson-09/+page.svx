@@ -1,5 +1,7 @@
 <script>
+import AnchorFlowAnimation from '$lib/components/AnchorFlowAnimation.svelte';
 import YamlViewer from '$lib/components/YamlViewer.svelte';
+import FaqAccordion from '$lib/components/FaqAccordion.svelte';
 
 const anchorStep1 = [
   { indent: 0, tokens: [{ text: '# Create a template using & (ampersand)', type: 'comment' }] },
@@ -45,6 +47,14 @@ const fullEnvironments = [
   { indent: 2, tokens: [{ text: 'stress_testing', type: 'key' }, { text: ': ', type: 'colon' }, { text: 'true', type: 'bool' }] },
   { indent: 2, tokens: [{ text: 'corner_analysis', type: 'key' }, { text: ': ', type: 'colon' }, { text: 'true', type: 'bool' }] },
 ];
+
+const faqItems = [
+  { question: 'What does & do?', answer: 'The ampersand & creates an "anchor" — a named template. Write &my_name after a key, and the values below become a reusable template called "my_name."' },
+  { question: 'What does * do?', answer: 'The asterisk * references an anchor. Write *my_name to copy all the values from that template into the current section.' },
+  { question: 'What does << do?', answer: 'The merge key << tells YAML to merge (copy) the referenced values into the current mapping. Without <<, the reference would replace the entire section instead of merging.' },
+  { question: 'Can I override a value from the template?', answer: 'Yes! If you write a key that also exists in the template, your value wins. For example, if the template has debug_mode: false and you write debug_mode: true after the merge, you get true.' },
+  { question: 'What happens if I change the template?', answer: 'All sections that reference it automatically get the updated values. Change "28nm" to "7nm" in base_config, and development, production, and testing all switch to "7nm."' },
+];
 </script>
 
 # Anchors & Aliases
@@ -52,6 +62,10 @@ const fullEnvironments = [
 Sometimes you have the same settings that need to be used in multiple places. Instead of copying and pasting the same information over and over, YAML has a special feature called "anchors" and "references" that lets you reuse information.
 
 Think of it like creating a **template** that you can copy to different places.
+
+Watch how one template flows into three different environments:
+
+<AnchorFlowAnimation />
 
 ---
 
@@ -89,6 +103,12 @@ Instead of writing the same three lines three times, you write them once and ref
 All three environments automatically get `technology: "28nm"`, `voltage: 1.2`, and `temperature: 25` from the base template. Each one then adds its own specific settings.
 
 If you ever need to change the technology from "28nm" to "7nm", you change it in **one place** (the base template) and all three environments update automatically.
+
+---
+
+## Common Questions
+
+<FaqAccordion items={faqItems} />
 
 ---
 
