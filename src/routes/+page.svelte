@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { modules } from '$lib/data/modules';
 	import BundleCard from '$lib/components/BundleCard.svelte';
+	import NewsletterForm from '$lib/components/NewsletterForm.svelte';
 </script>
 
 <div class="not-prose">
@@ -49,6 +50,8 @@
 	</div>
 
 	<BundleCard />
+
+	<NewsletterForm tag="yaml-landing" />
 </div>
 
 <style>

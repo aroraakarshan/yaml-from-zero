@@ -1,6 +1,7 @@
 <script>
 import LessonHeader from '$lib/components/LessonHeader.svelte';
 import BundleCard from '$lib/components/BundleCard.svelte';
+import NewsletterForm from '$lib/components/NewsletterForm.svelte';
 </script>
 
 # Handling YAML Errors in Python
@@ -122,6 +123,8 @@ You now know the complete Python–YAML workflow used across semiconductor desig
 ---
 
 <BundleCard />
+
+<NewsletterForm tag="yaml-lesson-14" />
 
 ---
 
