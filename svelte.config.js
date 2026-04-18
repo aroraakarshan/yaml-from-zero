@@ -21,7 +21,16 @@ const config = {
 	compilerOptions: {
 		runes: ({ filename }) => (filename.split(/[/\\]/).includes('node_modules') ? undefined : true)
 	},
-	kit: { adapter: adapter() },
+	kit: {
+		adapter: adapter({ fallback: '404.html' }),
+		paths: { base: process.env.BASE_PATH ?? '' },
+		prerender: {
+			handleHttpError: ({ path, referrer, message }) => {
+				if (path.startsWith('/lesson-') || path === '/' || path === '/glossary') return;
+				throw new Error(`${message} (linked from ${referrer})`);
+			}
+		}
+	},
 	preprocess: [mdsvex({ extensions: ['.svx', '.md'], highlight: { highlighter: shikiHighlight } })],
 	extensions: ['.svelte', '.svx', '.md']
 };
