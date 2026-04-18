@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { modules } from '$lib/data/modules';
+	import { base } from '$app/paths';
 	import BundleCard from '$lib/components/BundleCard.svelte';
 	import NewsletterForm from '$lib/components/NewsletterForm.svelte';
 </script>
@@ -8,7 +9,7 @@
 	<div class="landing-header">
 		<div class="landing-links">
 			<a href="https://akarshanarora.com" target="_blank" rel="noopener">Who am I</a>
-			<a href="/glossary">Glossary</a>
+			<a href="{base}/glossary">Glossary</a>
 			<a href="https://www.linkedin.com/in/aroraakarshan/" target="_blank" rel="noopener"
 				>LinkedIn</a
 			>
@@ -26,7 +27,7 @@
 		by <a href="https://akarshanarora.com" target="_blank" rel="noopener">Akarshan Arora</a>
 	</p>
 
-	<a href="/lesson-01" class="landing-start">Start Learning →</a>
+	<a href="{base}/lesson-01" class="landing-start">Start Learning →</a>
 
 	<div class="landing-outline">
 		{#each modules as mod}
@@ -39,7 +40,7 @@
 							.reduce((sum, m) => sum + m.lessons.length, 0) +
 						i +
 						1}
-					<a href="/{lesson.slug}" class="landing-lesson">
+					<a href="{base}/{lesson.slug}" class="landing-lesson">
 						<span class="landing-lesson-num">{String(globalIndex).padStart(2, '0')}</span>
 						<span class="landing-lesson-title">{lesson.title}</span>
 						<span class="landing-lesson-desc">{lesson.description}</span>

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { modules } from '$lib/data/modules';
 	import { page } from '$app/state';
+	import { base } from '$app/paths';
 	import { tick } from 'svelte';
 	import SearchBar from './SearchBar.svelte';
 
@@ -9,7 +10,7 @@
 	const currentPath = $derived(page.url.pathname);
 
 	function isActive(slug: string) {
-		return currentPath === `/${slug}`;
+		return currentPath === `${base}/${slug}` || currentPath === `/${slug}`;
 	}
 
 	const allLessons = $derived(modules.flatMap((m) => m.lessons));
@@ -50,7 +51,7 @@
 {/if}
 
 <aside class="sidebar" class:open={mobileOpen}>
-	<a href="/" class="sidebar-logo" onclick={closeMobile}>
+	<a href="{base}/" class="sidebar-logo" onclick={closeMobile}>
 		<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
 			<rect x="2" y="2" width="20" height="20" rx="4" stroke="var(--color-accent)" stroke-width="1.5" />
 			<text x="12" y="16" text-anchor="middle" fill="var(--color-accent)" font-size="11" font-weight="700" font-family="JetBrains Mono, monospace">Y</text>
@@ -69,7 +70,7 @@
 				{#each mod.lessons as lesson, i}
 					{@const globalIndex = allLessons.indexOf(lesson) + 1}
 					<a
-						href="/{lesson.slug}"
+						href="{base}/{lesson.slug}"
 						class="sidebar-link"
 						class:active={isActive(lesson.slug)}
 						onclick={closeMobile}
@@ -84,7 +85,7 @@
 		<div class="sidebar-module">
 			<span class="sidebar-module-label">Reference</span>
 			<a
-				href="/glossary"
+				href="{base}/glossary"
 				class="sidebar-link"
 				class:active={isActive('glossary')}
 				onclick={closeMobile}
