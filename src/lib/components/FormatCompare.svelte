@@ -231,6 +231,7 @@
 		display: flex;
 		gap: 0.5rem;
 		margin-bottom: 1rem;
+		flex-wrap: wrap;
 	}
 
 	.cmp-step {
@@ -279,7 +280,8 @@
 		padding: 20px 24px;
 		margin-bottom: 14px;
 		height: 250px;
-		overflow: hidden;
+		overflow-x: auto;
+		overflow-y: hidden;
 	}
 
 	.cmp-line {
@@ -351,5 +353,28 @@
 	.cmp-controls {
 		display: flex;
 		gap: 8px;
+	}
+
+	@media (max-width: 768px) {
+		.cmp-header {
+			padding: 1rem 0.875rem 0.5rem;
+		}
+		.cmp-body {
+			padding: 0.75rem 0.875rem 1rem;
+		}
+		.cmp-code {
+			font-size: 0.68rem;
+			padding: 12px 12px;
+			line-height: 1.7;
+			height: auto;
+			min-height: 180px;
+		}
+		.cmp-line {
+			white-space: pre-wrap;
+			word-break: break-word;
+		}
+		.cmp-meter-value {
+			min-width: 4rem;
+		}
 	}
 </style>

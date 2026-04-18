@@ -184,7 +184,7 @@
 		display: flex; align-items: center; gap: 10px;
 		background: var(--color-bg-card); border: 1px solid var(--color-border);
 		border-radius: 6px; padding: 6px 12px;
-		animation: slideIn 0.3s ease forwards; opacity: 0;
+		animation: slideIn 0.3s ease forwards;
 	}
 	.lb-visual-idx {
 		font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600;

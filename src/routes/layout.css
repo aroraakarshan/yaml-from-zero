@@ -378,3 +378,72 @@ code,
 		transform: none;
 	}
 }
+
+/* Mobile: wrap text in interactive/animated code boxes so content doesn't get clipped.
+   Class names are listed explicitly because Svelte's scoped-class hashing
+   (class="lb-split svelte-xxx") breaks [class$="-split"] attribute selectors. */
+@media (max-width: 768px) {
+	.af-code, .cards-code, .cmp-code, .dt-code, .es-code, .fyb-code,
+	.it-code, .kvb-code, .lb-code, .ml-code, .nl-code, .ol-code, .py-code,
+	.yv-block {
+		overflow-x: auto !important;
+		overflow-y: visible !important;
+		height: auto !important;
+		min-height: 0 !important;
+		font-size: 0.7rem !important;
+		padding: 12px 14px !important;
+		line-height: 1.7 !important;
+	}
+
+	.af-line, .cards-line, .cards-yaml, .cmp-line, .dt-line,
+	.error-line, .es-line, .es-line-text, .fix-line, .fyb-line,
+	.it-line, .kvb-line, .lb-line, .ms-line, .nl-line, .ol-line,
+	.ve-line, .yv-line {
+		white-space: pre-wrap !important;
+		word-break: break-word !important;
+	}
+
+	/* Split-pane interactive layouts stack to a single column on mobile
+	   with auto height — component defaults use fixed pixel heights. */
+	.af-split, .es-split, .fyb-split, .it-split, .kvb-split, .lb-split,
+	.ln-split, .ml-split, .ms-split, .ne-split, .nl-split, .ol-split,
+	.ve-split {
+		grid-template-columns: 1fr !important;
+		height: auto !important;
+		overflow: visible !important;
+		margin-left: 1rem !important;
+		margin-right: 1rem !important;
+	}
+
+	/* Explanation/caption boxes — let them grow instead of scrolling. */
+	.af-explain, .cmp-explain, .es-explain, .fyb-explain, .it-explain,
+	.kvb-explain, .lb-explain, .ms-explain, .nl-explain, .ol-explain,
+	.ve-explain, .hub-caption, .na-caption {
+		height: auto !important;
+		max-height: none !important;
+		overflow-y: visible !important;
+		margin-left: 1rem !important;
+		margin-right: 1rem !important;
+	}
+
+	/* Visualization panels and outer containers mustn't clip content. */
+	.lb-visual, .ln-visual, .ne-visual,
+	.nl-cards, .ol-cards {
+		overflow: visible !important;
+		height: auto !important;
+		min-height: 0 !important;
+	}
+
+	.af-container, .cards-container, .cmp-container, .es-container,
+	.faq-container, .fyb-container, .hub-container, .it-container,
+	.kvb-container, .lb-container, .ln-container, .ml-container,
+	.ms-container, .na-container, .ne-container, .nl-container,
+	.ol-container, .py-container, .ve-container {
+		overflow: visible !important;
+	}
+
+	.lb-visual-item, .lb-visual-val {
+		opacity: 1 !important;
+		word-break: break-word !important;
+	}
+}

@@ -278,9 +278,25 @@
 		gap: 8px;
 	}
 
-	@media (max-width: 600px) {
+	@media (max-width: 768px) {
+		.kvb-header {
+			padding: 1rem 1rem 0.5rem;
+		}
 		.kvb-split {
 			grid-template-columns: 1fr;
+			height: auto;
+			margin: 0.75rem 1rem;
+		}
+		.kvb-code {
+			padding: 14px 16px;
+		}
+		.kvb-explain {
+			padding: 14px 16px;
+			overflow-y: visible;
+		}
+		.kvb-footer {
+			padding: 0.75rem 1rem 1rem;
+			flex-wrap: wrap;
 		}
 	}
 </style>

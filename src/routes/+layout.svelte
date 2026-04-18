@@ -204,7 +204,7 @@
 
 	@media (max-width: 768px) {
 		.content-inner {
-			padding: 1.5rem 1rem 3rem;
+			padding: 3rem 1rem 3rem;
 		}
 	}
 </style>
