@@ -38,7 +38,13 @@
 		</g>
 	</g>
 
-	<!-- Author tag bottom right -->
-	<text x="1110" y="560" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="18" font-weight="600" fill="#8a7a5e">yaml-from-zero.akarshanarora.com</text>
-	<text x="1110" y="585" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="14" font-weight="400" fill="#b09c7a">by Akarshan Arora</text>
+	<!-- Call-to-action button -->
+	<g transform="translate(800, 500)">
+		<rect x="0" y="0" width="310" height="54" rx="10" fill="#c45d2c"/>
+		<text x="155" y="35" text-anchor="middle" font-family="Inter, ui-sans-serif, sans-serif" font-size="22" font-weight="700" fill="#faf9f6" letter-spacing="0.5">Start chapter 1 free  →</text>
+	</g>
+
+	<!-- Author tag top right -->
+	<text x="1110" y="130" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="18" font-weight="600" fill="#8a7a5e">yaml-from-zero.akarshanarora.com</text>
+	<text x="1110" y="155" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="14" font-weight="400" fill="#b09c7a">by Akarshan Arora</text>
 </svg>
