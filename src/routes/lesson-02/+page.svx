@@ -6,6 +6,7 @@ import DataTypeShowcase from '$lib/components/DataTypeShowcase.svelte';
 import FirstYamlBuilder from '$lib/components/FirstYamlBuilder.svelte';
 import MistakeSpotter from '$lib/components/MistakeSpotter.svelte';
 import YamlViewer from '$lib/components/YamlViewer.svelte';
+import PracticeSection from '$lib/editor/PracticeSection.svelte';
 
 const kvExample = [
   { indent: 0, tokens: [{ text: 'name', type: 'key' }, { text: ': ', type: 'colon' }, { text: '"My Semiconductor Design"', type: 'str' }] },
@@ -193,6 +194,10 @@ Congratulations! You now know the basic rules of YAML:
 5. **Data types**: Text, numbers, and true/false values
 
 These simple rules are all you need to start writing YAML files. In the next lesson, we'll learn how to organize more complex information using these same basic rules.
+
+<div class="not-prose">
+<PracticeSection lesson="lesson-02" />
+</div>
 
 ---
 

@@ -4,6 +4,7 @@ import LessonHeader from '$lib/components/LessonHeader.svelte';
 import ListBuilder from '$lib/components/ListBuilder.svelte';
 import ObjectListBuilder from '$lib/components/ObjectListBuilder.svelte';
 import YamlViewer from '$lib/components/YamlViewer.svelte';
+import PracticeSection from '$lib/editor/PracticeSection.svelte';
 import FaqAccordion from '$lib/components/FaqAccordion.svelte';
 
 const listInGroup = [
@@ -144,6 +145,10 @@ That is four levels deep: project → tests → item → settings → voltage. I
 - ✓ Lists can live **inside nested groups** — indent the dashes
 - ✓ Each list item can have its own **nested groups inside it**
 - ✓ You can combine nesting and lists as deep as you need
+
+<div class="not-prose">
+<PracticeSection lesson="lesson-04" />
+</div>
 
 ---
 

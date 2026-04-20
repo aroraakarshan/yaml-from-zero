@@ -5,6 +5,7 @@ import NestingAnimation from '$lib/components/NestingAnimation.svelte';
 import IndentationTree from '$lib/components/IndentationTree.svelte';
 import NestingExplorer from '$lib/components/NestingExplorer.svelte';
 import YamlViewer from '$lib/components/YamlViewer.svelte';
+import PracticeSection from '$lib/editor/PracticeSection.svelte';
 import FaqAccordion from '$lib/components/FaqAccordion.svelte';
 
 const faqItems = [
@@ -136,6 +137,10 @@ You have learned how to organize complex information in YAML:
 - ✓ Think of it like **folders inside folders** or **drawers in a filing cabinet**
 
 In the next lesson, we will learn how to make lists — another way to organize multiple items.
+
+<div class="not-prose">
+<PracticeSection lesson="lesson-03" />
+</div>
 
 ---
 

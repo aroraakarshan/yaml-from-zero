@@ -5,6 +5,7 @@ import FormatCompare from '$lib/components/FormatCompare.svelte';
 import LanguageHubAnimation from '$lib/components/LanguageHubAnimation.svelte';
 import SemiconConfigCards from '$lib/components/SemiconConfigCards.svelte';
 import YamlViewer from '$lib/components/YamlViewer.svelte';
+import PracticeSection from '$lib/editor/PracticeSection.svelte';
 
 const firstLook = [
   { indent: 0, tokens: [{ text: '# My semiconductor design project', type: 'comment' }] },
@@ -163,6 +164,10 @@ YAML is a simple way to organize and store information that both you and compute
 - It's the industry standard for modern configuration files
 
 In the next lesson, we'll learn the basic rules for writing YAML files. Don't worry — there are only a few simple rules to remember!
+
+<div class="not-prose">
+<PracticeSection lesson="lesson-01" />
+</div>
 
 ---
 

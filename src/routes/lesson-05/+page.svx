@@ -3,6 +3,7 @@ import { base } from '$app/paths';
 import LessonHeader from '$lib/components/LessonHeader.svelte';
 import MultilineDemo from '$lib/components/MultilineDemo.svelte';
 import YamlViewer from '$lib/components/YamlViewer.svelte';
+import PracticeSection from '$lib/editor/PracticeSection.svelte';
 
 const pipeExample = [
   { indent: 0, tokens: [{ text: 'description', type: 'key' }, { text: ': ', type: 'colon' }, { text: '|', type: 'str' }] },
@@ -98,6 +99,10 @@ Count the dots: `description` is at 2 spaces, its text content is at 4 spaces. W
 - ✓ The text must be **indented** under the key
 - ✓ Use `|` for code and structured text, `>` for long descriptions
 - ✓ Remember: pipe = wall (blocks merging), `>` = push (joins lines)
+
+<div class="not-prose">
+<PracticeSection lesson="lesson-05" />
+</div>
 
 ---
 
