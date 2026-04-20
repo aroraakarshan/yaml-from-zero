@@ -1,146 +1,106 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { highlightYaml } from './highlight.js';
-	import { validateYaml, getLineErrors, type ValidationResult } from './validate.js';
+	import { onMount, onDestroy } from 'svelte';
+	import { CodeJar } from 'codejar';
+	import { getShikiHighlighter } from './highlight.js';
+	import { validateYaml, getLineErrors, type ValidationResult, type ValidationError } from './validate.js';
 	import {
 		evaluateExercise,
 		allChecksPassed,
 		type PracticeExercise,
 		type CheckResult
 	} from './exercise-checker.js';
+	import type { Highlighter } from 'shiki';
 
 	let { exercise }: { exercise: PracticeExercise } = $props();
 
 	const initialCode = exercise.starterCode ?? '';
 
-	// Editor state
+	// State for validation display (updated on debounce, never blocks typing)
 	let code = $state(initialCode);
-	let highlightedHtml = $state('');
 	let validation = $state<ValidationResult>({ valid: true, errors: [], parsed: null, document: null });
 	let checkResults = $state<CheckResult[]>([]);
 	let completed = $state(false);
 	let showHints = $state(false);
 	let currentHint = $state(0);
-	let composing = $state(false);
-	let mounted = $state(false);
+	let celebrating = $state(false);
 
-	// Line-level state for animations
-	let lineCount = $derived(code.split('\n').length);
-	let lineErrors = $derived(getLineErrors(validation, lineCount));
+	let displayLineCount = $state(1);
 	let lineValidity = $state<('valid' | 'error' | 'empty')[]>([]);
 	let prevLineValidity = $state<('valid' | 'error' | 'empty')[]>([]);
+	let lineErrors = $state<(ValidationError | null)[]>([]);
 
-	// DOM refs
-	let textareaEl: HTMLTextAreaElement;
-	let overlayEl: HTMLDivElement;
-	let gutterEl: HTMLDivElement;
+	// CodeJar instance + highlighter
+	let jar: ReturnType<typeof CodeJar> | null = null;
+	let highlighter: Highlighter | null = null;
+	let editorEl: HTMLDivElement;
 
-	// Debounce timer
 	let debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
-	function updateHighlightAndValidation() {
-		if (composing) return;
+	// Shiki highlight function for CodeJar — mutates el.innerHTML directly
+	function highlight(el: HTMLElement) {
+		if (!highlighter) return;
+		const text = el.textContent ?? '';
+		try {
+			const tokens = highlighter.codeToTokensBase(text || ' ', { lang: 'yaml', theme: 'github-light' });
+			// Build flat HTML: each token as a styled span, lines joined by \n
+			let html = '';
+			for (let i = 0; i < tokens.length; i++) {
+				if (i > 0) html += '\n';
+				for (const token of tokens[i]) {
+					const escaped = token.content
+						.replace(/&/g, '&amp;')
+						.replace(/</g, '&lt;')
+						.replace(/>/g, '&gt;');
+					if (token.color) {
+						html += `<span style="color:${token.color}">${escaped}</span>`;
+					} else {
+						html += escaped;
+					}
+				}
+			}
+			el.innerHTML = html;
+		} catch {
+			// On error, leave text as-is
+		}
+	}
 
-		// Validate
-		validation = validateYaml(code);
-		checkResults = evaluateExercise(exercise, validation, code);
+	function runValidation(text: string) {
+		code = text;
+		validation = validateYaml(text);
+		checkResults = evaluateExercise(exercise, validation, text);
 
 		const wasCompleted = completed;
 		completed = allChecksPassed(checkResults);
 		if (completed && !wasCompleted) {
-			triggerCelebration();
+			celebrating = true;
+			setTimeout(() => (celebrating = false), 1800);
 		}
 
-		// Compute per-line validity for animations
+		const lines = text.split('\n');
+		displayLineCount = lines.length;
+		const errors = getLineErrors(validation, displayLineCount);
+		lineErrors = errors;
+
 		prevLineValidity = [...lineValidity];
-		const lines = code.split('\n');
 		lineValidity = lines.map((line, i) => {
 			if (!line.trim()) return 'empty';
-			return lineErrors[i] ? 'error' : 'valid';
-		});
-
-		// Highlight
-		highlightYaml(code).then((html) => {
-			highlightedHtml = html;
+			return errors[i] ? 'error' : 'valid';
 		});
 	}
 
-	function debouncedUpdate() {
+	function onUpdate(text: string) {
 		if (debounceTimer) clearTimeout(debounceTimer);
-		debounceTimer = setTimeout(updateHighlightAndValidation, 250);
-	}
-
-	function handleInput() {
-		debouncedUpdate();
-		syncScroll();
-		autoResize();
-	}
-
-	function handleKeydown(e: KeyboardEvent) {
-		// Tab → insert 2 spaces
-		if (e.key === 'Tab') {
-			e.preventDefault();
-			const start = textareaEl.selectionStart;
-			const end = textareaEl.selectionEnd;
-
-			if (e.shiftKey) {
-				// Shift+Tab: dedent current line
-				const lines = code.split('\n');
-				const beforeCursor = code.substring(0, start);
-				const lineIndex = beforeCursor.split('\n').length - 1;
-				const line = lines[lineIndex];
-				if (line.startsWith('  ')) {
-					lines[lineIndex] = line.substring(2);
-					code = lines.join('\n');
-					textareaEl.selectionStart = Math.max(0, start - 2);
-					textareaEl.selectionEnd = Math.max(0, end - 2);
-				}
-			} else {
-				// Tab: insert 2 spaces
-				code = code.substring(0, start) + '  ' + code.substring(end);
-				// Need to wait for Svelte to update the textarea value
-				requestAnimationFrame(() => {
-					textareaEl.selectionStart = textareaEl.selectionEnd = start + 2;
-				});
-			}
-			debouncedUpdate();
-		}
-	}
-
-	function syncScroll() {
-		if (overlayEl && textareaEl) {
-			overlayEl.scrollTop = textareaEl.scrollTop;
-			overlayEl.scrollLeft = textareaEl.scrollLeft;
-		}
-		if (gutterEl && textareaEl) {
-			gutterEl.scrollTop = textareaEl.scrollTop;
-		}
-	}
-
-	function autoResize() {
-		if (!textareaEl) return;
-		textareaEl.style.height = 'auto';
-		const newHeight = Math.max(textareaEl.scrollHeight, 160);
-		textareaEl.style.height = newHeight + 'px';
-	}
-
-	// Celebration
-	let celebrating = $state(false);
-	function triggerCelebration() {
-		celebrating = true;
-		setTimeout(() => (celebrating = false), 1800);
+		// Longer debounce to avoid flashing errors while still typing (e.g. mid-quote)
+		debounceTimer = setTimeout(() => runValidation(text), 500);
 	}
 
 	function resetEditor() {
-		code = initialCode;
 		completed = false;
 		celebrating = false;
 		showHints = false;
 		currentHint = 0;
-		requestAnimationFrame(() => {
-			updateHighlightAndValidation();
-			autoResize();
-		});
+		jar?.updateCode(initialCode);
+		runValidation(initialCode);
 	}
 
 	function nextHint() {
@@ -149,10 +109,26 @@
 		}
 	}
 
-	onMount(() => {
-		mounted = true;
-		updateHighlightAndValidation();
-		autoResize();
+	onMount(async () => {
+		highlighter = await getShikiHighlighter();
+
+		jar = CodeJar(editorEl, highlight, {
+			tab: '  ',
+			indentOn: /:\s*$/,
+			moveToNewLine: /:\s*$/,
+			addClosing: false
+		});
+
+		jar.updateCode(initialCode);
+		jar.onUpdate(onUpdate);
+
+		// Initial validation
+		runValidation(initialCode);
+	});
+
+	onDestroy(() => {
+		jar?.destroy();
+		if (debounceTimer) clearTimeout(debounceTimer);
 	});
 </script>
 
@@ -164,13 +140,13 @@
 	</div>
 
 	<div class="pe-editor-wrap">
-		<!-- Gutter: line numbers + validation marks -->
-		<div class="pe-gutter" bind:this={gutterEl} aria-hidden="true">
-			{#each Array(lineCount) as _, i}
-				<div class="pe-gutter-line" class:pe-gutter-valid={lineValidity[i] === 'valid' && prevLineValidity[i] !== 'valid'} class:pe-gutter-error={lineValidity[i] === 'error'}>
+		<!-- Gutter -->
+		<div class="pe-gutter" aria-hidden="true">
+			{#each Array(displayLineCount) as _, i}
+				<div class="pe-gutter-line">
 					<span class="pe-line-num">{i + 1}</span>
 					{#if lineValidity[i] === 'valid'}
-						<span class="pe-mark pe-mark-valid" title="Valid YAML">✓</span>
+						<span class="pe-mark pe-mark-valid" class:pe-mark-fresh={prevLineValidity[i] !== 'valid'} title="Valid YAML">✓</span>
 					{:else if lineValidity[i] === 'error'}
 						<span class="pe-mark pe-mark-error" title={lineErrors[i]?.message ?? 'Error'}>×</span>
 					{:else}
@@ -180,52 +156,20 @@
 			{/each}
 		</div>
 
-		<!-- Editor area -->
-		<div class="pe-editor">
-			<!-- Shiki highlighted overlay -->
-			<div
-				class="pe-overlay"
-				bind:this={overlayEl}
-				aria-hidden="true"
-			>
-				{@html highlightedHtml}
-			</div>
-
-			<!-- Actual textarea -->
-			<textarea
-				bind:this={textareaEl}
-				bind:value={code}
-				oninput={handleInput}
-				onkeydown={handleKeydown}
-				onscroll={syncScroll}
-				oncompositionstart={() => (composing = true)}
-				oncompositionend={() => { composing = false; debouncedUpdate(); }}
-				class="pe-textarea"
-				spellcheck="false"
-				autocapitalize="off"
-				autocomplete="off"
-				aria-label="YAML practice editor for: {exercise.title}"
-				placeholder="Start typing YAML here..."
-			></textarea>
-
-			<!-- Ink stroke validation lines -->
-			<div class="pe-ink-strokes" aria-hidden="true">
-				{#each Array(lineCount) as _, i}
-					<div
-						class="pe-ink-line"
-						class:pe-ink-valid={lineValidity[i] === 'valid'}
-						class:pe-ink-error={lineValidity[i] === 'error'}
-						class:pe-ink-fresh={lineValidity[i] === 'valid' && prevLineValidity[i] !== 'valid'}
-					></div>
-				{/each}
-			</div>
-		</div>
+		<!-- CodeJar editor -->
+		<div
+			class="pe-editor"
+			bind:this={editorEl}
+			role="textbox"
+			aria-multiline="true"
+			aria-label="YAML practice editor for: {exercise.title}"
+		></div>
 	</div>
 
-	<!-- Error list for accessibility -->
-	{#if validation.errors.length > 0}
+	<!-- Error list for accessibility (hide transient mid-typing errors) -->
+	{#if validation.errors.filter(e => !e.transient).length > 0}
 		<div class="pe-errors" role="status" aria-live="polite">
-			{#each validation.errors as err}
+			{#each validation.errors.filter(e => !e.transient) as err}
 				<div class="pe-error-item">
 					<span class="pe-error-loc">Line {err.line}</span>
 					<span class="pe-error-msg">{err.message}</span>
@@ -341,14 +285,14 @@
 		border-right: 1px solid var(--color-border);
 		overflow: hidden;
 		user-select: none;
-		min-width: 52px;
+		min-width: 48px;
 	}
 	.pe-gutter-line {
 		display: flex;
 		align-items: center;
 		gap: 2px;
 		padding: 0 6px 0 8px;
-		height: 22.4px; /* matches textarea line-height */
+		height: 22.4px;
 		font-family: var(--font-mono);
 		font-size: 0.72rem;
 	}
@@ -364,27 +308,18 @@
 	}
 	.pe-mark-valid {
 		color: #1a7f37;
+	}
+	.pe-mark-fresh {
 		animation: markFadeIn 0.3s ease forwards;
 	}
 	.pe-mark-error {
 		color: #dc2626;
 		font-weight: 700;
 	}
-	.pe-gutter-valid .pe-mark-valid {
-		animation: markFadeIn 0.3s ease forwards;
-	}
 
-	/* ─── Editor ─── */
+	/* ─── CodeJar Editor ─── */
 	.pe-editor {
-		position: relative;
 		flex: 1;
-		min-height: 160px;
-	}
-
-	.pe-textarea {
-		position: relative;
-		z-index: 2;
-		width: 100%;
 		min-height: 160px;
 		padding: 12px 16px;
 		font-family: var(--font-mono);
@@ -393,85 +328,12 @@
 		tab-size: 2;
 		white-space: pre;
 		overflow-x: auto;
-		overflow-y: hidden;
-		border: none;
 		outline: none;
-		background: transparent;
-		color: transparent;
 		caret-color: var(--color-accent);
-		resize: none;
+		color: var(--color-text-primary);
 	}
-	.pe-textarea::selection {
+	.pe-editor :global(::selection) {
 		background: rgba(196, 93, 44, 0.15);
-	}
-	.pe-textarea::placeholder {
-		color: var(--color-text-muted);
-		opacity: 0.5;
-	}
-
-	.pe-overlay {
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		z-index: 1;
-		pointer-events: none;
-		overflow: hidden;
-	}
-	.pe-overlay :global(pre) {
-		margin: 0;
-		padding: 12px 16px;
-		font-family: var(--font-mono);
-		font-size: 0.82rem;
-		line-height: 22.4px;
-		tab-size: 2;
-		white-space: pre;
-		background: transparent !important;
-		overflow: hidden;
-	}
-	.pe-overlay :global(code) {
-		font-family: var(--font-mono);
-		background: none;
-		padding: 0;
-	}
-
-	/* ─── Ink stroke validation lines ─── */
-	.pe-ink-strokes {
-		position: absolute;
-		top: 12px;
-		left: 16px;
-		right: 16px;
-		z-index: 0;
-		pointer-events: none;
-	}
-	.pe-ink-line {
-		height: 22.4px;
-		position: relative;
-	}
-	.pe-ink-line::after {
-		content: '';
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		height: 1.5px;
-		border-radius: 1px;
-		transform: scaleX(0);
-		transform-origin: left;
-		transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-					background-color 0.3s ease;
-	}
-	.pe-ink-valid::after {
-		background-color: rgba(196, 93, 44, 0.25);
-		transform: scaleX(1);
-	}
-	.pe-ink-fresh::after {
-		animation: inkStroke 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-	}
-	.pe-ink-error::after {
-		background-color: rgba(220, 38, 38, 0.15);
-		transform: scaleX(1);
 	}
 
 	/* ─── Errors ─── */
@@ -594,11 +456,6 @@
 	}
 
 	/* ─── Animations ─── */
-	@keyframes inkStroke {
-		from { transform: scaleX(0); }
-		to { transform: scaleX(1); }
-	}
-
 	@keyframes markFadeIn {
 		from { opacity: 0; transform: scale(0.5); }
 		to { opacity: 1; transform: scale(1); }

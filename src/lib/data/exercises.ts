@@ -26,7 +26,7 @@ export const exercisesByLesson: Record<string, PracticeExercise[]> = {
 			title: 'Write your first key-value pair',
 			instructions:
 				'YAML stores information as key: value pairs. Write a single key called "name" with any text value you like. Remember: there must be a space after the colon!',
-			starterCode: '# Type your first YAML below\n',
+			starterCode: '',
 			hints: [
 				'The format is: key: value',
 				'Try: name: "My First Chip"',
@@ -46,7 +46,7 @@ export const exercisesByLesson: Record<string, PracticeExercise[]> = {
 			title: 'Use all three data types',
 			instructions:
 				'Write a YAML file with at least 3 keys: one with a text (string) value, one with a number, and one with a boolean (true/false). Add a comment at the top describing what your file is about.',
-			starterCode: '# Describe your file here\n',
+			starterCode: '',
 			hints: [
 				'Strings can be plain text or wrapped in quotes',
 				'Numbers are written without quotes: frequency: 100',
@@ -122,7 +122,7 @@ export const exercisesByLesson: Record<string, PracticeExercise[]> = {
 			title: 'Write a list of items',
 			instructions:
 				'Create a key called "tests" that contains a list of at least 3 test names. Use the dash (-) syntax for list items.',
-			starterCode: '# List your tests below\n',
+			starterCode: '',
 			hints: [
 				'Start with "tests:" on its own line',
 				'Each item starts with a dash: ··- "speed_test"',

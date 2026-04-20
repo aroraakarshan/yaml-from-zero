@@ -5,6 +5,8 @@ export interface ValidationError {
 	col: number;
 	message: string;
 	severity: 'error' | 'warning';
+	/** Transient errors (e.g. unclosed quotes) that likely resolve as the user keeps typing */
+	transient: boolean;
 }
 
 export interface ValidationResult {
@@ -34,11 +36,13 @@ export function validateYaml(text: string): ValidationResult {
 	for (const err of doc.errors) {
 		const pos = err.pos?.[0] ?? 0;
 		const { line, col } = offsetToLineCol(text, pos);
+		const isTransient = err.code === 'MISSING_CHAR' || err.code === 'BAD_SCALAR_START';
 		errors.push({
 			line,
 			col,
 			message: cleanErrorMessage(err.message),
-			severity: 'error'
+			severity: 'error',
+			transient: isTransient
 		});
 	}
 
@@ -49,7 +53,8 @@ export function validateYaml(text: string): ValidationResult {
 			line,
 			col,
 			message: cleanErrorMessage(warn.message),
-			severity: 'warning'
+			severity: 'warning',
+			transient: false
 		});
 	}
 
@@ -94,13 +99,16 @@ function cleanErrorMessage(msg: string): string {
  * Get per-line validation status.
  * Returns an array where index = 0-based line number,
  * value = null (no error on this line) or the first error on that line.
+ * Skips transient errors (e.g. unclosed quotes mid-typing) by default.
  */
 export function getLineErrors(
 	result: ValidationResult,
-	lineCount: number
+	lineCount: number,
+	includeTransient = false
 ): (ValidationError | null)[] {
 	const lineErrors: (ValidationError | null)[] = new Array(lineCount).fill(null);
 	for (const err of result.errors) {
+		if (!includeTransient && err.transient) continue;
 		const idx = err.line - 1;
 		if (idx >= 0 && idx < lineCount && !lineErrors[idx]) {
 			lineErrors[idx] = err;
