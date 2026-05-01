@@ -26,7 +26,7 @@ const config = {
 		paths: { base: process.env.BASE_PATH ?? '' },
 		prerender: {
 			handleHttpError: ({ path, referrer, message }) => {
-				if (path.startsWith('/lesson-') || path === '/' || path === '/glossary') return;
+				if (path.endsWith('/') || path.endsWith('/glossary') || path.endsWith('/lesson-01') || path.includes('/lesson-')) return;
 				throw new Error(`${message} (linked from ${referrer})`);
 			}
 		}
