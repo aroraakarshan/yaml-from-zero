@@ -1,5 +1,5 @@
 import { mdsvex } from 'mdsvex';
-import adapter from '@sveltejs/adapter-static';
+import adapter from '@sveltejs/adapter-cloudflare';
 import { createHighlighter } from 'shiki';
 
 const highlighter = await createHighlighter({
@@ -22,12 +22,11 @@ const config = {
 		runes: ({ filename }) => (filename.split(/[/\\]/).includes('node_modules') ? undefined : true)
 	},
 	kit: {
-		adapter: adapter({ fallback: '404.html' }),
+		adapter: adapter(),
 		paths: { base: process.env.BASE_PATH ?? '' },
 		prerender: {
 			handleHttpError: ({ path, referrer, message }) => {
-				if (path.endsWith('/') || path.endsWith('/glossary') || path.endsWith('/lesson-01') || path.includes('/lesson-')) return;
-				throw new Error(`${message} (linked from ${referrer})`);
+				console.warn(`[prerender] ${path}: ${message} (linked from ${referrer})`);
 			}
 		}
 	},

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
-	import { CodeJar } from 'codejar';
 	import { getShikiHighlighter } from './highlight.js';
 	import { validateYaml, getLineErrors, type ValidationResult, type ValidationError } from './validate.js';
 	import {
@@ -30,7 +29,7 @@
 	let lineErrors = $state<(ValidationError | null)[]>([]);
 
 	// CodeJar instance + highlighter
-	let jar: ReturnType<typeof CodeJar> | null = null;
+	let jar: any = null;
 	let highlighter: Highlighter | null = null;
 	let editorEl: HTMLDivElement;
 
@@ -111,6 +110,7 @@
 
 	onMount(async () => {
 		highlighter = await getShikiHighlighter();
+		const { CodeJar } = await import('codejar');
 
 		jar = CodeJar(editorEl, highlight, {
 			tab: '  ',
