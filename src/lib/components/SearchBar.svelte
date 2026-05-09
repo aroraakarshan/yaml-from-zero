@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { searchAll, type SearchEntry } from '$lib/data/search';
+	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { onMount, tick } from 'svelte';
 
@@ -8,7 +9,7 @@
 	let activeIdx = $state(0);
 	let inputEl: HTMLInputElement | null = $state(null);
 
-	const results = $derived(searchAll(query));
+	const results = $derived(searchAll(query, base));
 
 	$effect(() => {
 		query;

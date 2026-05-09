@@ -49,7 +49,7 @@ export const searchIndex: SearchEntry[] = [
 	...parseGlossary(glossaryRaw)
 ];
 
-export function searchAll(query: string, limit = 12): SearchEntry[] {
+export function searchAll(query: string, base: string, limit = 12): SearchEntry[] {
 	const q = query.trim().toLowerCase();
 	if (!q) return [];
 	const tokens = q.split(/\s+/);
@@ -70,5 +70,8 @@ export function searchAll(query: string, limit = 12): SearchEntry[] {
 		if (allMatch) scored.push({ e, score });
 	}
 	scored.sort((a, b) => b.score - a.score);
-	return scored.slice(0, limit).map((s) => s.e);
+	return scored.slice(0, limit).map((s) => ({
+		...s.e,
+		url: base + s.e.url
+	}));
 }

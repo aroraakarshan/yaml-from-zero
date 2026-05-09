@@ -1,9 +1,17 @@
 {
 	"$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/config-schema.json",
 	"name": "yaml-from-zero",
-	"pages_build_output_dir": "build",
+	"main": ".svelte-kit/cloudflare/_worker.js",
 	"compatibility_date": "2026-05-02",
 	"compatibility_flags": ["nodejs_compat"],
+	"assets": {
+		"directory": ".svelte-kit/cloudflare",
+		"binding": "ASSETS",
+		"not_found_handling": "404-page"
+	},
+	"routes": [
+		"courses.akarshanarora.com/yaml-from-zero/*"
+	],
 	"observability": {
 		"enabled": true
 	}

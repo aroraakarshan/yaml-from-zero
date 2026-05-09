@@ -5,10 +5,10 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
-		"build": "vite build && node scripts/fix-base-paths.mjs",
+		"build": "vite build",
 		"preview": "vite preview",
-		"pages:dev": "vite build && wrangler pages dev ./build",
-		"pages:deploy": "BASE_PATH=/yaml-from-zero vite build && node scripts/fix-base-paths.mjs && wrangler pages deploy ./build",
+		"cf:dev": "vite build && wrangler dev",
+		"deploy": "BASE_PATH=/yaml-from-zero vite build && wrangler deploy",
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
@@ -16,7 +16,7 @@
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-static": "^3.0.10",
+		"@sveltejs/adapter-cloudflare": "^7.2.8",
 		"@sveltejs/kit": "^2.57.0",
 		"@sveltejs/vite-plugin-svelte": "^7.0.0",
 		"@tailwindcss/typography": "^0.5.19",
